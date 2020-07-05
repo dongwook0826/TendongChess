@@ -1,0 +1,4 @@
+#moveTable .table-column {
+    -fx-alignment : CENTER;
+    -fx-font-family : "Cascadia Mono"
+}

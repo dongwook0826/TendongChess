@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox prefHeight="725.0" prefWidth="915.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chess.view.ChessController">
+    <MenuBar>
+        <Menu mnemonicParsing="false" text="File">
+         <MenuItem disable="true" mnemonicParsing="false" text="Save the game as PGN" />
+            <MenuItem disable="true" mnemonicParsing="false" text="Read PGN..." />
+         <SeparatorMenuItem mnemonicParsing="false" />
+         <MenuItem mnemonicParsing="false" onAction="#gameExit" text="Close" />
+        </Menu>
+        <Menu mnemonicParsing="false" text="Game">
+            <MenuItem mnemonicParsing="false" onAction="#gameInitialize" text="New game" />
+         <MenuItem disable="true" mnemonicParsing="false" text="Saved game..." />
+        </Menu>
+        <Menu mnemonicParsing="false" text="Config">
+            <MenuItem disable="true" mnemonicParsing="false" text="Configuration" />
+        </Menu>
+        <Menu mnemonicParsing="false" text="Info">
+            <MenuItem mnemonicParsing="false" text="About..." />
+        </Menu>
+    </MenuBar>
+    <HBox alignment="CENTER" prefHeight="700.0" prefWidth="915.0">
+        <AnchorPane prefHeight="700.0" prefWidth="700.0">
+            <HBox.margin>
+                <Insets />
+            </HBox.margin>
+            <Pane AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                <padding>
+                    <Insets bottom="5.0" />
+                </padding>
+                <AnchorPane>
+                    <Rectangle fx:id="backBoard" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="690.0" stroke="BLACK" strokeType="INSIDE" width="690.0" />
+                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#948c75" height="650.0" layoutX="21.0" layoutY="21.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="650.0" />
+                    <Pane fx:id="boardPane" layoutX="26.0" layoutY="26.0">
+                        <Rectangle fx:id="square_00" fill="#d9ceb2" height="80.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_10" fill="#948c75" height="80.0" layoutX="80.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_20" fill="#d9ceb2" height="80.0" layoutX="160.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_30" fill="#948c75" height="80.0" layoutX="240.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_40" fill="#d9ceb2" height="80.0" layoutX="320.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_50" fill="#948c75" height="80.0" layoutX="400.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_60" fill="#d9ceb2" height="80.0" layoutX="480.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_70" fill="#948c75" height="80.0" layoutX="560.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_01" fill="#948c75" height="80.0" layoutY="80.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_11" fill="#d9ceb2" height="80.0" layoutX="80.0" layoutY="80.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_21" fill="#948c75" height="80.0" layoutX="160.0" layoutY="80.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_31" fill="#d9ceb2" height="80.0" layoutX="240.0" layoutY="80.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_41" fill="#948c75" height="80.0" layoutX="320.0" layoutY="80.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_51" fill="#d9ceb2" height="80.0" layoutX="400.0" layoutY="80.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_61" fill="#948c75" height="80.0" layoutX="480.0" layoutY="80.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_71" fill="#d9ceb2" height="80.0" layoutX="560.0" layoutY="80.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_02" fill="#d9ceb2" height="80.0" layoutY="160.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_12" fill="#948c75" height="80.0" layoutX="80.0" layoutY="160.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_22" fill="#d9ceb2" height="80.0" layoutX="160.0" layoutY="160.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_32" fill="#948c75" height="80.0" layoutX="240.0" layoutY="160.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_42" fill="#d9ceb2" height="80.0" layoutX="320.0" layoutY="160.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_52" fill="#948c75" height="80.0" layoutX="400.0" layoutY="160.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_62" fill="#d9ceb2" height="80.0" layoutX="480.0" layoutY="160.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_72" fill="#948c75" height="80.0" layoutX="560.0" layoutY="160.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_03" fill="#948c75" height="80.0" layoutY="240.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_13" fill="#d9ceb2" height="80.0" layoutX="80.0" layoutY="240.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_23" fill="#948c75" height="80.0" layoutX="160.0" layoutY="240.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_33" fill="#d9ceb2" height="80.0" layoutX="240.0" layoutY="240.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_43" fill="#948c75" height="80.0" layoutX="320.0" layoutY="240.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_53" fill="#d9ceb2" height="80.0" layoutX="400.0" layoutY="240.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_63" fill="#948c75" height="80.0" layoutX="480.0" layoutY="240.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_73" fill="#d9ceb2" height="80.0" layoutX="560.0" layoutY="240.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_04" fill="#d9ceb2" height="80.0" layoutY="320.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_14" fill="#948c75" height="80.0" layoutX="80.0" layoutY="320.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_24" fill="#d9ceb2" height="80.0" layoutX="160.0" layoutY="320.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_34" fill="#948c75" height="80.0" layoutX="240.0" layoutY="320.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_44" fill="#d9ceb2" height="80.0" layoutX="320.0" layoutY="320.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_54" fill="#948c75" height="80.0" layoutX="400.0" layoutY="320.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_64" fill="#d9ceb2" height="80.0" layoutX="480.0" layoutY="320.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_74" fill="#948c75" height="80.0" layoutX="560.0" layoutY="320.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_05" fill="#948c75" height="80.0" layoutY="400.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_15" fill="#d9ceb2" height="80.0" layoutX="80.0" layoutY="400.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_25" fill="#948c75" height="80.0" layoutX="160.0" layoutY="400.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_35" fill="#d9ceb2" height="80.0" layoutX="240.0" layoutY="400.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_45" fill="#948c75" height="80.0" layoutX="320.0" layoutY="400.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_55" fill="#d9ceb2" height="80.0" layoutX="400.0" layoutY="400.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_65" fill="#948c75" height="80.0" layoutX="480.0" layoutY="400.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_75" fill="#d9ceb2" height="80.0" layoutX="560.0" layoutY="400.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_06" fill="#d9ceb2" height="80.0" layoutY="480.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_16" fill="#948c75" height="80.0" layoutX="80.0" layoutY="480.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_26" fill="#d9ceb2" height="80.0" layoutX="160.0" layoutY="480.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_36" fill="#948c75" height="80.0" layoutX="240.0" layoutY="480.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_46" fill="#d9ceb2" height="80.0" layoutX="320.0" layoutY="480.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_56" fill="#948c75" height="80.0" layoutX="400.0" layoutY="480.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_66" fill="#d9ceb2" height="80.0" layoutX="480.0" layoutY="480.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_76" fill="#948c75" height="80.0" layoutX="560.0" layoutY="480.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_07" fill="#948c75" height="80.0" layoutY="560.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_17" fill="#d9ceb2" height="80.0" layoutX="80.0" layoutY="560.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_27" fill="#948c75" height="80.0" layoutX="160.0" layoutY="560.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_37" fill="#d9ceb2" height="80.0" layoutX="240.0" layoutY="560.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_47" fill="#948c75" height="80.0" layoutX="320.0" layoutY="560.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_57" fill="#d9ceb2" height="80.0" layoutX="400.0" layoutY="560.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_67" fill="#948c75" height="80.0" layoutX="480.0" layoutY="560.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                        <Rectangle fx:id="square_77" fill="#d9ceb2" height="80.0" layoutX="560.0" layoutY="560.0" smooth="false" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+                    </Pane>
+                </AnchorPane>
+                <AnchorPane layoutX="26.0" layoutY="26.0">
+                    <ImageView fx:id="image_00" fitHeight="80.0" fitWidth="80.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" />
+                    <ImageView fx:id="image_10" fitHeight="80.0" fitWidth="80.0" layoutX="80.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" />
+                    <ImageView fx:id="image_20" fitHeight="80.0" fitWidth="80.0" layoutX="160.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" />
+                    <ImageView fx:id="image_30" fitHeight="80.0" fitWidth="80.0" layoutX="240.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" />
+                    <ImageView fx:id="image_40" fitHeight="80.0" fitWidth="80.0" layoutX="320.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" />
+                    <ImageView fx:id="image_50" fitHeight="80.0" fitWidth="80.0" layoutX="400.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" />
+                    <ImageView fx:id="image_60" fitHeight="80.0" fitWidth="80.0" layoutX="480.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" />
+                    <ImageView fx:id="image_70" fitHeight="80.0" fitWidth="80.0" layoutX="560.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" />
+                    <ImageView fx:id="image_01" fitHeight="80.0" fitWidth="80.0" layoutY="80.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" />
+                    <ImageView fx:id="image_11" fitHeight="80.0" fitWidth="80.0" layoutX="80.0" layoutY="80.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" />
+                    <ImageView fx:id="image_21" fitHeight="80.0" fitWidth="80.0" layoutX="160.0" layoutY="80.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" />
+                    <ImageView fx:id="image_31" fitHeight="80.0" fitWidth="80.0" layoutX="240.0" layoutY="80.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" />
+                    <ImageView fx:id="image_41" fitHeight="80.0" fitWidth="80.0" layoutX="320.0" layoutY="80.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" />
+                    <ImageView fx:id="image_51" fitHeight="80.0" fitWidth="80.0" layoutX="400.0" layoutY="80.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" />
+                    <ImageView fx:id="image_61" fitHeight="80.0" fitWidth="80.0" layoutX="480.0" layoutY="80.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" />
+                    <ImageView fx:id="image_71" fitHeight="80.0" fitWidth="80.0" layoutX="560.0" layoutY="80.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" />
+                    <ImageView fx:id="image_02" fitHeight="80.0" fitWidth="80.0" layoutY="160.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" visible="false" />
+                    <ImageView fx:id="image_12" fitHeight="80.0" fitWidth="80.0" layoutX="80.0" layoutY="160.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" visible="false" />
+                    <ImageView fx:id="image_22" fitHeight="80.0" fitWidth="80.0" layoutX="160.0" layoutY="160.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" visible="false" />
+                    <ImageView fx:id="image_32" fitHeight="80.0" fitWidth="80.0" layoutX="240.0" layoutY="160.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" visible="false" />
+                    <ImageView fx:id="image_42" fitHeight="80.0" fitWidth="80.0" layoutX="320.0" layoutY="160.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" visible="false" />
+                    <ImageView fx:id="image_52" fitHeight="80.0" fitWidth="80.0" layoutX="400.0" layoutY="160.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" visible="false" />
+                    <ImageView fx:id="image_62" fitHeight="80.0" fitWidth="80.0" layoutX="480.0" layoutY="160.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" visible="false" />
+                    <ImageView fx:id="image_72" fitHeight="80.0" fitWidth="80.0" layoutX="560.0" layoutY="160.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" visible="false" />
+                    <ImageView fx:id="image_03" fitHeight="80.0" fitWidth="80.0" layoutY="240.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" visible="false" />
+                    <ImageView fx:id="image_13" fitHeight="80.0" fitWidth="80.0" layoutX="80.0" layoutY="240.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" visible="false" />
+                    <ImageView fx:id="image_23" fitHeight="80.0" fitWidth="80.0" layoutX="160.0" layoutY="240.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" visible="false" />
+                    <ImageView fx:id="image_33" fitHeight="80.0" fitWidth="80.0" layoutX="240.0" layoutY="240.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" visible="false" />
+                    <ImageView fx:id="image_43" fitHeight="80.0" fitWidth="80.0" layoutX="320.0" layoutY="240.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" visible="false" />
+                    <ImageView fx:id="image_53" fitHeight="80.0" fitWidth="80.0" layoutX="400.0" layoutY="240.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" visible="false" />
+                    <ImageView fx:id="image_63" fitHeight="80.0" fitWidth="80.0" layoutX="480.0" layoutY="240.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" visible="false" />
+                    <ImageView fx:id="image_73" fitHeight="80.0" fitWidth="80.0" layoutX="560.0" layoutY="240.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" visible="false" />
+                    <ImageView fx:id="image_04" fitHeight="80.0" fitWidth="80.0" layoutY="320.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" visible="false" />
+                    <ImageView fx:id="image_14" fitHeight="80.0" fitWidth="80.0" layoutX="80.0" layoutY="320.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" visible="false" />
+                    <ImageView fx:id="image_24" fitHeight="80.0" fitWidth="80.0" layoutX="160.0" layoutY="320.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" visible="false" />
+                    <ImageView fx:id="image_34" fitHeight="80.0" fitWidth="80.0" layoutX="240.0" layoutY="320.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" visible="false" />
+                    <ImageView fx:id="image_44" fitHeight="80.0" fitWidth="80.0" layoutX="320.0" layoutY="320.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" visible="false" />
+                    <ImageView fx:id="image_54" fitHeight="80.0" fitWidth="80.0" layoutX="400.0" layoutY="320.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" visible="false" />
+                    <ImageView fx:id="image_64" fitHeight="80.0" fitWidth="80.0" layoutX="480.0" layoutY="320.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" visible="false" />
+                    <ImageView fx:id="image_74" fitHeight="80.0" fitWidth="80.0" layoutX="560.0" layoutY="320.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" visible="false" />
+                    <ImageView fx:id="image_05" fitHeight="80.0" fitWidth="80.0" layoutY="400.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" visible="false" />
+                    <ImageView fx:id="image_15" fitHeight="80.0" fitWidth="80.0" layoutX="80.0" layoutY="400.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" visible="false" />
+                    <ImageView fx:id="image_25" fitHeight="80.0" fitWidth="80.0" layoutX="160.0" layoutY="400.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" visible="false" />
+                    <ImageView fx:id="image_35" fitHeight="80.0" fitWidth="80.0" layoutX="240.0" layoutY="400.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" visible="false" />
+                    <ImageView fx:id="image_45" fitHeight="80.0" fitWidth="80.0" layoutX="320.0" layoutY="400.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" visible="false" />
+                    <ImageView fx:id="image_55" fitHeight="80.0" fitWidth="80.0" layoutX="400.0" layoutY="400.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" visible="false" />
+                    <ImageView fx:id="image_65" fitHeight="80.0" fitWidth="80.0" layoutX="480.0" layoutY="400.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" visible="false" />
+                    <ImageView fx:id="image_75" fitHeight="80.0" fitWidth="80.0" layoutX="560.0" layoutY="400.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" visible="false" />
+                    <ImageView fx:id="image_06" fitHeight="80.0" fitWidth="80.0" layoutY="480.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" />
+                    <ImageView fx:id="image_16" fitHeight="80.0" fitWidth="80.0" layoutX="80.0" layoutY="480.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" />
+                    <ImageView fx:id="image_26" fitHeight="80.0" fitWidth="80.0" layoutX="160.0" layoutY="480.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" />
+                    <ImageView fx:id="image_36" fitHeight="80.0" fitWidth="80.0" layoutX="240.0" layoutY="480.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" />
+                    <ImageView fx:id="image_46" fitHeight="80.0" fitWidth="80.0" layoutX="320.0" layoutY="480.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" />
+                    <ImageView fx:id="image_56" fitHeight="80.0" fitWidth="80.0" layoutX="400.0" layoutY="480.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" />
+                    <ImageView fx:id="image_66" fitHeight="80.0" fitWidth="80.0" layoutX="480.0" layoutY="480.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" />
+                    <ImageView fx:id="image_76" fitHeight="80.0" fitWidth="80.0" layoutX="560.0" layoutY="480.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" />
+                    <ImageView fx:id="image_07" fitHeight="80.0" fitWidth="80.0" layoutY="560.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" />
+                    <ImageView fx:id="image_17" fitHeight="80.0" fitWidth="80.0" layoutX="80.0" layoutY="560.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" />
+                    <ImageView fx:id="image_27" fitHeight="80.0" fitWidth="80.0" layoutX="160.0" layoutY="560.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" />
+                    <ImageView fx:id="image_37" fitHeight="80.0" fitWidth="80.0" layoutX="240.0" layoutY="560.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" />
+                    <ImageView fx:id="image_47" fitHeight="80.0" fitWidth="80.0" layoutX="320.0" layoutY="560.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" />
+                    <ImageView fx:id="image_57" fitHeight="80.0" fitWidth="80.0" layoutX="400.0" layoutY="560.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" />
+                    <ImageView fx:id="image_67" fitHeight="80.0" fitWidth="80.0" layoutX="480.0" layoutY="560.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" />
+                    <ImageView fx:id="image_77" fitHeight="80.0" fitWidth="80.0" layoutX="560.0" layoutY="560.0" onMouseDragged="#movePiece" onMousePressed="#startMovePiece" onMouseReleased="#finishMovePiece" pickOnBounds="true" preserveRatio="true" />
+                </AnchorPane>
+                <AnchorPane layoutX="61.0" layoutY="672.0">
+                    <Text fx:id="file_0" fill="#7a6a53" layoutY="12.015625" strokeType="OUTSIDE" strokeWidth="0.0" text="a">
+                        <font>
+                            <Font size="16.0" />
+                        </font>
+                    </Text>
+                    <Text fx:id="file_1" fill="#7a6a53" layoutX="80.0" layoutY="12.015625" strokeType="OUTSIDE" strokeWidth="0.0" text="b">
+                        <font>
+                            <Font size="16.0" />
+                        </font>
+                    </Text>
+                    <Text fx:id="file_2" fill="#7a6a53" layoutX="160.0" layoutY="12.015625" strokeType="OUTSIDE" strokeWidth="0.0" text="c">
+                        <font>
+                            <Font size="16.0" />
+                        </font>
+                    </Text>
+                    <Text fx:id="file_3" fill="#7a6a53" layoutX="240.0" layoutY="12.015625" strokeType="OUTSIDE" strokeWidth="0.0" text="d">
+                        <font>
+                            <Font size="16.0" />
+                        </font>
+                    </Text>
+                    <Text fx:id="file_4" fill="#7a6a53" layoutX="320.0" layoutY="12.015625" strokeType="OUTSIDE" strokeWidth="0.0" text="e">
+                        <font>
+                            <Font size="16.0" />
+                        </font>
+                    </Text>
+                    <Text fx:id="file_5" fill="#7a6a53" layoutX="402.0" layoutY="12.015625" strokeType="OUTSIDE" strokeWidth="0.0" text="f">
+                        <font>
+                            <Font size="16.0" />
+                        </font>
+                    </Text>
+                    <Text fx:id="file_6" fill="#7a6a53" layoutX="480.0" layoutY="12.015625" strokeType="OUTSIDE" strokeWidth="0.0" text="g">
+                        <font>
+                            <Font size="16.0" />
+                        </font>
+                    </Text>
+                    <Text fx:id="file_7" fill="#7a6a53" layoutX="560.0" layoutY="12.015625" strokeType="OUTSIDE" strokeWidth="0.0" text="h">
+                        <font>
+                            <Font size="16.0" />
+                        </font>
+                    </Text>
+                </AnchorPane>
+                <AnchorPane layoutX="8.0" layoutY="69.984375">
+                    <Text fx:id="rank_7" fill="#7a6a53" layoutX="1.0" layoutY="560.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1" textAlignment="CENTER">
+                        <font>
+                            <Font size="16.0" />
+                        </font>
+                    </Text>
+                    <Text fx:id="rank_6" fill="#7a6a53" layoutY="480.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2" textAlignment="CENTER">
+                        <font>
+                            <Font size="16.0" />
+                        </font>
+                    </Text>
+                    <Text fx:id="rank_5" fill="#7a6a53" layoutY="400.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3" textAlignment="CENTER">
+                        <font>
+                            <Font size="16.0" />
+                        </font>
+                    </Text>
+                    <Text fx:id="rank_4" fill="#7a6a53" layoutY="320.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4" textAlignment="CENTER">
+                        <font>
+                            <Font size="16.0" />
+                        </font>
+                    </Text>
+                    <Text fx:id="rank_3" fill="#7a6a53" layoutY="240.0" strokeType="OUTSIDE" strokeWidth="0.0" text="5" textAlignment="CENTER">
+                        <font>
+                            <Font size="16.0" />
+                        </font>
+                    </Text>
+                    <Text fx:id="rank_2" fill="#7a6a53" layoutY="160.0" strokeType="OUTSIDE" strokeWidth="0.0" text="6" textAlignment="CENTER">
+                        <font>
+                            <Font size="16.0" />
+                        </font>
+                    </Text>
+                    <Text fx:id="rank_1" fill="#7a6a53" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="7" textAlignment="CENTER">
+                        <font>
+                            <Font size="16.0" />
+                        </font>
+                    </Text>
+                    <Text fx:id="rank_0" fill="#7a6a53" strokeType="OUTSIDE" strokeWidth="0.0" text="8" textAlignment="CENTER">
+                        <font>
+                            <Font size="16.0" />
+                        </font>
+                    </Text>
+                </AnchorPane>
+                <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="670.0" layoutY="670.0" onMouseClicked="#swap" pickOnBounds="true" preserveRatio="true">
+                    <Image url="@/chess/view/image/util/swap_icon.png" />
+                </ImageView>
+            </Pane>
+        </AnchorPane>
+        <TableView fx:id="moveTable" prefHeight="700.0" prefWidth="215.0" styleClass="table-column" stylesheets="@MoveTableAlign.css">
+            <columns>
+                <TableColumn fx:id="moveNumColumn" editable="false" prefWidth="50.0" text="move" />
+                <TableColumn fx:id="whiteMoveNotationColumn" editable="false" prefWidth="75.0" sortable="false" text="White" />
+                <TableColumn fx:id="blackMoveNotationColumn" editable="false" prefWidth="75.0" sortable="false" text="Black" />
+            </columns>
+        </TableView>
+    </HBox>
+</VBox>

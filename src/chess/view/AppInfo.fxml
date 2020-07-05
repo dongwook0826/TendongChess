@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="250.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="chess.view.AppInfoController">
+    <Text layoutX="60.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TendongChess"
+          AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="60.0">
+        <font>
+          <Font name="Cascadia Mono Regular" size="14.0"/>
+        </font>
+    </Text>
+    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="version 0.01" AnchorPane.leftAnchor="50.0"
+          AnchorPane.topAnchor="85.0">
+        <font>
+          <Font name="Cascadia Mono Regular" size="14.0"/>
+        </font>
+    </Text>
+    <ImageView fitHeight="90.0" fitWidth="90.0" layoutX="359.0" layoutY="53.0" pickOnBounds="true" preserveRatio="true"
+               AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
+        <Image url="@/chess/view/image/util/horse-head.png"/>
+    </ImageView>
+</AnchorPane>
