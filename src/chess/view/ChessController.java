@@ -1,10 +1,15 @@
 package chess.view;
 
+import chess.model.Move;
 import chess.model.MovePair;
 import chess.model.board.Square;
 import chess.model.piece.Piece;
+import javafx.application.Application;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -15,10 +20,17 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import chess.model.ChessGame;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 import java.util.HashSet;
 
 public class ChessController {
+
+    private Application chessApp;
+
+    public void setChessApp(Application chessApp){
+        this.chessApp = chessApp;
+    }
 
     private final int DIM = ChessGame.DIM;
 
@@ -238,13 +250,16 @@ public class ChessController {
     private boolean isSwapped = false;
 
     private int[] holdingIndex = {-1,-1};
-    private int[] targetIndex = {-1,-1};
+    // int[] targetIndex as local variable in finishMovePiece
 
     private final HashSet<Circle> movableSpots = new HashSet<>();
+    private final HashSet<Rectangle> squareHighlights = new HashSet<>();
+    private final int[][] squareHighlightsIndex = {{-1,-1},{-1,-1}};
 
     private Point2D dragOffset = new Point2D(0.0d, 0.0d);
 
     private boolean allMoveLocked = false;
+    private boolean gameFinished = false;
 
     {
         whitePromToQueen.setGraphic(new ImageView(
@@ -363,9 +378,10 @@ public class ChessController {
                 }else{
                     chessGame.takeback(movePair.getMoveNum() + (isWhite ? 0 : 1), !isWhite);
                 }
-                System.out.printf("%s's turn\n", chessGame.getTurn().toString());
-                chessGame.printBoard(false);
+                // System.out.printf("%s's turn\n", chessGame.getTurn().toString());
+                // chessGame.printBoard(false);
                 allMoveLocked = false;
+                gameFinished = false;
             }
         });
     }
@@ -395,11 +411,74 @@ public class ChessController {
         });
     }
 
+    @FXML
+    private void resign(){
+        boolean turn = chessGame.getTurn().isWhite();
+        Alert resignAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        resignAlert.setTitle("Resign");
+        resignAlert.setHeaderText(String.format("Resigning as %s", turn ? "white" : "black"));
+        resignAlert.setContentText("Are you sure for the resignation?");
+        resignAlert.showAndWait().ifPresent(response -> {
+            if(response == ButtonType.OK){
+                chessGame.setResult(turn ? -1 : 1, true);
+                checkResult();
+            }
+        });
+    }
+
+    @FXML
+    private void offerDraw(){
+        boolean turn = chessGame.getTurn().isWhite();
+        Alert drawAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        drawAlert.setTitle("Draw offer");
+        drawAlert.setHeaderText(String.format("Offering a draw from %s",
+                turn ? "white to black" : "black to white"));
+        drawAlert.setContentText("Are you sure for the draw offer?");
+        drawAlert.showAndWait().ifPresent(response -> {
+            if(response == ButtonType.OK)
+                acceptDraw(turn);
+        });
+    }
+
+    private void acceptDraw(boolean turn){
+        Alert drawAcceptAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        drawAcceptAlert.setTitle("Draw acceptance");
+        drawAcceptAlert.setHeaderText(String.format("Draw offer from %s", turn ? "white" : "black"));
+        drawAcceptAlert.setContentText("Do you accept the draw offer?");
+        drawAcceptAlert.showAndWait().ifPresent(response -> {
+            if(response == ButtonType.OK){
+                chessGame.setResult(0, true);
+                checkResult();
+            }
+        });
+    }
+
+
+    // @FXML private void forceFinish(){}
+
+    @FXML
+    private void showAppInfo() throws Exception {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        Parent appInfo = fxmlLoader.load(getClass().getResource("AppInfo.fxml").openStream());
+        AppInfoController infoCtrl = fxmlLoader.getController();
+        infoCtrl.setChessApp(chessApp);
+        Stage appInfoStage = new Stage();
+        appInfoStage.setTitle("TendongChess Info");
+        appInfoStage.setScene(new Scene(appInfo, 500, 250));
+        appInfoStage.setMaxHeight(290);
+        appInfoStage.setMinHeight(290);
+        appInfoStage.setMaxWidth(515);
+        appInfoStage.setMinWidth(515);
+        appInfoStage.show();
+    }
+
     // ---------------- pieces mouse event handler ----------------
 
     @FXML
     private void startMovePiece(MouseEvent evt){
+        clearHighlightSquare();
         holdingIndex = pickIndex(evt);
+        highlightSquare(holdingIndex);
         initialSquare = indToSquareMap(holdingIndex[0], holdingIndex[1]);
         holdingPieceImage = indToImageViewMap(holdingIndex[0], holdingIndex[1]);
         assert holdingPieceImage != null;
@@ -412,7 +491,8 @@ public class ChessController {
         holdingPiece = isSwapped ?
                 chessGame.squareOn(DIM-1-holdingIndex[1], DIM-1-holdingIndex[0]).getPiece() :
                 chessGame.squareOn(holdingIndex[1], holdingIndex[0]).getPiece();
-        if(!allMoveLocked && holdingPiece.color() == chessGame.getTurn()){
+        if(!allMoveLocked && !gameFinished
+                && holdingPiece.color() == chessGame.getTurn()){
             double sqWidth = square_00.getWidth();
             for(Square sq : holdingPiece.getMovable()){
                 int fl = sq.file(), rk = sq.rank();
@@ -422,7 +502,7 @@ public class ChessController {
                                         sqWidth/4, Color.YELLOW);
                 if(holdingPiece.getTakeable().contains(sq))
                     spot.setFill(Color.RED);
-                spot.setOpacity(0.7d);
+                spot.setOpacity(0.5d);
                 boardPane.getChildren().add(spot);
                 movableSpots.add(spot);
             }
@@ -456,7 +536,7 @@ public class ChessController {
 
     @FXML
     private void finishMovePiece(MouseEvent evt){
-        targetIndex = pickIndex(evt);
+        int[] targetIndex = pickIndex(evt);
         Rectangle targetSquare;
         if(targetIndex[0]<0){
             targetSquare = initialSquare;
@@ -466,14 +546,14 @@ public class ChessController {
         if(targetSquare != initialSquare){
             StringBuilder uci = moveToUCI(holdingIndex, targetIndex);
             Square tg = isSwapped ?
-                    chessGame.squareOn(DIM-1-targetIndex[1], DIM-1-targetIndex[0]) :
+                    chessGame.squareOn(DIM-1- targetIndex[1], DIM-1- targetIndex[0]) :
                     chessGame.squareOn(targetIndex[1], targetIndex[0]);
-            boolean moveValid = !allMoveLocked
+            boolean moveValid = !allMoveLocked && !gameFinished
                                 && holdingPiece.color() == chessGame.getTurn()
                                 && holdingPiece.getMovable().contains(tg);
             if(!moveValid){
                 evt.consume();
-            }else {
+            }else{
                 ImageView targetImage = indToImageViewMap(targetIndex[0], targetIndex[1]);
                 targetImage.setImage(holdingPieceImage.getImage());
                 if (!targetImage.isVisible()) targetImage.setVisible(true);
@@ -482,7 +562,7 @@ public class ChessController {
                 // if pawn is on the last rank, choose the material kind to promote to
                 if (targetImage.getImage() == white_Pawn
                         && targetIndex[0] == (isSwapped ? 7 : 0)) {
-                    System.out.println("white prom");
+                    // System.out.println("white prom");
                     whitePromotionMenu.show(targetImage, evt.getScreenX(), evt.getScreenY());
                     whitePromToQueen.setOnAction(e -> uci.append('q'));
                     whitePromToRook.setOnAction(e -> uci.append('r'));
@@ -497,13 +577,16 @@ public class ChessController {
                             // case 'q'
                             default -> white_Queen;
                         });
+                        /*
                         System.out.printf("(%d, %d) -> (%d, %d) :: %s\n",
                                 holdingIndex[0], holdingIndex[1], targetIndex[0], targetIndex[1], uci.toString());
+                         */
                         chessGame.move(uci.toString());
+                        checkResult();
                     });
-                } else if (targetImage.getImage() == black_Pawn
-                        && targetIndex[0] == (isSwapped ? 0 : 7)) {
-                    System.out.println("black prom");
+                }else if(targetImage.getImage() == black_Pawn
+                        && targetIndex[0] == (isSwapped ? 0 : 7)){
+                    // System.out.println("black prom");
                     blackPromotionMenu.show(targetImage, evt.getScreenX(), evt.getScreenY());
                     blackPromToQueen.setOnAction(e -> uci.append('q'));
                     blackPromToRook.setOnAction(e -> uci.append('r'));
@@ -518,17 +601,27 @@ public class ChessController {
                             // case 'q'
                             default -> black_Queen;
                         });
+                        /*
                         System.out.printf("(%d, %d) -> (%d, %d) :: %s\n",
                                 holdingIndex[0], holdingIndex[1], targetIndex[0], targetIndex[1], uci.toString());
+                         */
                         chessGame.move(uci.toString());
+                        checkResult();
                     });
                 } else {
+                    /*
                     System.out.printf("(%d, %d) -> (%d, %d) :: %s\n",
                             holdingIndex[0], holdingIndex[1], targetIndex[0], targetIndex[1], uci.toString());
+                     */
                     chessGame.move(uci.toString());
+                    checkResult();
                 }
+                squareHighlightsIndex[0] = holdingIndex;
+                squareHighlightsIndex[1] = targetIndex;
+                // highlightSquare(squareHighlightsIndex[0]);
+                highlightSquare(squareHighlightsIndex[1]);
                 setPieceImages(currentBoard, isSwapped, false);
-                chessGame.printBoard(isSwapped);
+                // chessGame.printBoard(isSwapped);
             }
         }else{
             evt.consume();
@@ -539,6 +632,32 @@ public class ChessController {
         for(Circle spot : movableSpots){
             boardPane.getChildren().remove(spot);
         }movableSpots.clear();
+    }
+
+    private void checkResult(){
+        int result = chessGame.getResult();
+        if(result <= -2 || result >= 2) return;
+        gameFinished = true;
+        Alert gameFinishAlert = new Alert(Alert.AlertType.INFORMATION);
+        gameFinishAlert.setTitle("Game finished");
+        if(result == 1){
+            gameFinishAlert.setHeaderText("White's win by "+chessGame.getResultInfo());
+            gameFinishAlert.setContentText("Congratulations!\nBetter next time, Black! :)");
+            ImageView icon = new ImageView(white_King);
+            icon.setFitHeight(50);
+            icon.setFitWidth(50);
+            gameFinishAlert.getDialogPane().setGraphic(icon);
+        }else if(result == -1){
+            gameFinishAlert.setHeaderText("Black's win by "+chessGame.getResultInfo());
+            gameFinishAlert.setContentText("Congratulations!\nBetter next time, White! :)");
+            ImageView icon = new ImageView(black_King);
+            icon.setFitHeight(50);
+            icon.setFitWidth(50);
+            gameFinishAlert.getDialogPane().setGraphic(icon);
+        }else{ // result == 0
+            gameFinishAlert.setHeaderText("Draw by "+chessGame.getResultInfo());
+            gameFinishAlert.setContentText("Maybe we can break the ties next time!");
+        }gameFinishAlert.showAndWait();
     }
 
     private int[] pickIndex(MouseEvent evt){
@@ -625,7 +744,14 @@ public class ChessController {
         // swapIcon 클릭하면 180도 돌려서 보여주기
         isSwapped = !isSwapped;
         // file/rank 표시자 재배치
-        resetFileRankIndic(isSwapped);
+        flipFileRankIndic(isSwapped);
+        // 강조된 사각형 재배치
+        clearHighlightSquare();
+        for(int t=0; t<squareHighlightsIndex.length; t++)
+            for(int i=0; i<squareHighlightsIndex[t].length; i++)
+                squareHighlightsIndex[t][i] = DIM-1-squareHighlightsIndex[t][i];
+        highlightSquare(squareHighlightsIndex[0]);
+        highlightSquare(squareHighlightsIndex[1]);
         // 말들 이미지 재배치
         for(int r=0; r<DIM; r++){
             for(int f=0; f<DIM; f++){
@@ -649,6 +775,21 @@ public class ChessController {
         setPieceImages(moveNum == 0 ? ChessGame.INITIAL_BOARD :
                 chessGame.getMoves().get(moveInd).getBoardHistory(),
                 isSwapped, false);
+        clearHighlightSquare();
+        if(moveInd >= 0){
+            Move move = chessGame.getMoves().get(moveInd);
+                squareHighlightsIndex[0][0] = move.getFromSquare().rank();
+                squareHighlightsIndex[0][1] = move.getFromSquare().file();
+                squareHighlightsIndex[1][0] = move.getToSquare().rank();
+                squareHighlightsIndex[1][1] = move.getToSquare().file();
+            if(isSwapped){
+                for(int t=0; t<squareHighlightsIndex.length; t++)
+                    for(int i=0; i<squareHighlightsIndex[t].length; i++)
+                        squareHighlightsIndex[t][i] = DIM-1-squareHighlightsIndex[t][i];
+            }
+            highlightSquare(squareHighlightsIndex[0]);
+            highlightSquare(squareHighlightsIndex[1]);
+        }
         allMoveLocked = moveInd != chessGame.getMoveCount()-1;
     }
 
@@ -660,9 +801,31 @@ public class ChessController {
         }
     }
 
+    private void highlightSquare(int[] ind){
+        if(ind.length < 2) return;
+        highlightSquare(ind[0], ind[1]);
+    }
+
+    private void highlightSquare(int rk, int fl){
+        Rectangle piv = indToSquareMap(rk, fl);
+        if(piv == null) return;
+        Rectangle hli = new Rectangle(piv.getWidth(), piv.getHeight(), Color.YELLOW);
+        hli.setX(piv.getLayoutX());
+        hli.setY(piv.getLayoutY());
+        hli.setOpacity(0.3d);
+        squareHighlights.add(hli);
+        boardPane.getChildren().add(hli);
+    }
+
+    private void clearHighlightSquare(){
+        for(Rectangle rect : squareHighlights){
+            boardPane.getChildren().remove(rect);
+        }squareHighlights.clear();
+    }
+
     // -------------------------- maps -----------------------------
 
-    private void resetFileRankIndic(boolean isSwapped){
+    private void flipFileRankIndic(boolean isSwapped){
         if(isSwapped){
             file_0.setText("h");
             file_1.setText("g");

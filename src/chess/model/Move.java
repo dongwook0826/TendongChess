@@ -7,13 +7,6 @@ import chess.model.piece.*;
 
 public class Move {
 
-    /*
-    todo
-    말들의 권한 주입 :
-    킹/룩 -> 캐슬링 가능 여부 -> 어느 순간 이후로 사라지는 권한이므로 정수형으로 ChessGame에 넣어두면 ㅇㅋ
-    폰 -> 앙파상 가능 여부 -> 이건 ind-1째 움직임에서 파악 가능하므로 여긴 안넣어도 ㅇㅋ
-     */
-
     private String algebraicNotation = "";
     private int[][] boardHistory;
 
@@ -27,7 +20,6 @@ public class Move {
     private boolean rankAmbiguous = false;
     /*
     toSquare에 올 수 있는 말들 중, movedPiece와 종류가 같은 것이 있으면 아래 탐색 시작
-    이 과정상의 의미론을 확실히 해보자
     1) fromSquare와 같은 file의 다른 칸에는 그런 말들이 없을 경우 : fileAmbiguous
     2) fromSquare와 같은 rank의 다른 칸에는 그런 말들이 없을 경우 : rankAmbiguous
     3) 둘 다 아닐 경우, 즉 fromSquare의 file에도 rank에도 그런 말들이 있을 경우 : fileAmb. && rankAmb.

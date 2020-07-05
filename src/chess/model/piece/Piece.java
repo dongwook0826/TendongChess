@@ -20,22 +20,24 @@ public abstract class Piece {
         this.game = game;
         this.color = color;
     }
+
     /*
     public Piece(Square square, boolean color){
         this(color);
         this.square = square;
-    }*/
+    }
+     */
 
     public Piece(ChessGame game, PieceColor color, String pieceId){
         this(game, color);
         this.pieceId = pieceId;
-        // System.out.printf("gen piece %s %s\n", color.toString(), pieceId);
     }
 
     /*
     public void setPieceId(String pieceId){
         this.pieceId = pieceId;
-    }*/
+    }
+     */
 
     public void setSquare(Square square){
         if(this.square != null){
@@ -43,7 +45,6 @@ public abstract class Piece {
         }
         this.square = square;
         if(square.getPiece() != this) square.setPiece(this);
-        // System.out.printf("--setSquare-- %s on %s\n", pieceId, square.toString());
     }
 
     public Square getSquare(){
@@ -51,7 +52,6 @@ public abstract class Piece {
     }
 
     public void thisIsMyKing(){
-        // assert game != null : "no game info";
         myKing = (King)game.getPieces(color).get("K");
     }
 
@@ -59,7 +59,8 @@ public abstract class Piece {
     public void thisIsMyKing(King myKing){
         assert myKing != null : "no king instance";
         this.myKing = myKing;
-    }*/
+    }
+     */
 
     public int file() { return square.file(); }
 
@@ -96,7 +97,6 @@ public abstract class Piece {
             board[i] = game.getBoard()[i].clone();
         }
         // try the move on board
-        // int tmp = board[rank][file];
         if(board[rank][file] * color.toInteger() > 0) return false;
         int pRank = rank();
         int pFile = file();
@@ -113,14 +113,8 @@ public abstract class Piece {
         int oc = color.opponent().toInteger();
         if(game.inRange(kr+oc)){
             if(game.inRange(kf+1) && board[kr+oc][kf+1] == Pawn.INDICATOR*oc){
-                /*
-                board[pRank][pFile] = board[rank][file];
-                board[rank][file] = tmp;*/
                 return false;
             }else if(game.inRange(kf-1) && board[kr+oc][kf-1] == Pawn.INDICATOR*oc){
-                /*
-                board[pRank][pFile] = board[rank][file];
-                board[rank][file] = tmp;*/
                 return false;
             }
         }
@@ -128,9 +122,6 @@ public abstract class Piece {
         for (int[] nm : Knight.getMovableSquares()) {
             if (!(game.inRange(kf + nm[0]) && game.inRange(kr + nm[1]))) continue;
             if (board[kr + nm[1]][kf + nm[0]] == Knight.INDICATOR * oc) {
-                /*
-                board[pRank][pFile] = board[rank][file];
-                board[rank][file] = tmp;*/
                 return false;
             }
         }
@@ -141,9 +132,6 @@ public abstract class Piece {
                 if(tind < 0) break; // our piece
                 else if(tind > 0){ // opponent's piece
                     if(tind == Rook.INDICATOR || tind == Queen.INDICATOR){
-                        /*
-                        board[pRank][pFile] = board[rank][file];
-                        board[rank][file] = tmp;*/
                         return false;
                     }else break;
                 }
@@ -156,9 +144,6 @@ public abstract class Piece {
                 if(tind < 0) break; // our piece
                 else if(tind > 0){ // opponent's piece
                     if(tind == Bishop.INDICATOR || tind == Queen.INDICATOR){
-                        /*
-                        board[pRank][pFile] = board[rank][file];
-                        board[rank][file] = tmp;*/
                         return false;
                     }else break;
                 }

@@ -77,6 +77,9 @@ public class ChessGame {
 
     private int result = Integer.MIN_VALUE;
     // 1, 0, -1 for white win, draw, black win respectively
+    private String resultInfo = "";
+    // win : checkmate / resignation
+    // draw : repetition / fifty move / material insufficiency / stalemate
 
     private Piece genPiece(PieceColor color, String pieceId){
         return switch (pieceId.charAt(pieceId.length() - 1)) {
@@ -130,7 +133,7 @@ public class ChessGame {
 
     public ChessGame() {
         title = String.format("NewGame_%d", System.currentTimeMillis());
-        System.out.printf("Let's play a chess!\n%s\n", title);
+        // System.out.printf("Let's play a chess!\n%s\n", title);
     }
     /*
     public ChessGame(String title){
@@ -143,17 +146,17 @@ public class ChessGame {
 
     public boolean move(String uci){
         if(uci.length() < 4 || uci.length() > 5){
-            System.out.printf("invalid notation length : %d\n", uci.length());
+            // System.out.printf("invalid notation length : %d\n", uci.length());
             return false;
         }
         if(!(inRange(uci.charAt(0)-'a') && inRange('8'-uci.charAt(1))
                 && inRange(uci.charAt(2)-'a') && inRange('8'-uci.charAt(3)))){
-            System.out.println("incorrect UCI notation format");
+            // System.out.println("incorrect UCI notation format");
             return false;
         }
         Square sq = squareOn(uci.charAt(0)-'a', '8'-uci.charAt(1));
         if(sq.isEmpty() || sq.getPiece().color() != turn){
-            System.out.println("Not your turn!");
+            // System.out.println("Not your turn!");
             return false;
         }
         if(uci.length() == 5){
@@ -163,12 +166,12 @@ public class ChessGame {
                 b7a8n : move b7 pawn and take a8, and promote to knight
              */
             if(sq.isEmpty()){
-                System.out.printf("no piece on the square : %s\n", uci.substring(0,2));
+                // System.out.printf("no piece on the square : %s\n", uci.substring(0,2));
                 return false;
             }
             Piece piece = sq.getPiece();
             if(!(piece instanceof Pawn)){
-                System.out.println("piece on the square is not a pawn");
+                // System.out.println("piece on the square is not a pawn");
                 return false;
             }
             int prom = switch(uci.charAt(uci.length()-1)){
@@ -181,7 +184,7 @@ public class ChessGame {
             move((Pawn)piece, squareOn(uci.charAt(2)-'a', '8'-uci.charAt(3)), prom);
         }else {
             if(sq.isEmpty()){
-                System.out.printf("no piece on the square : %s\n", uci.substring(0,2));
+                // System.out.printf("no piece on the square : %s\n", uci.substring(0,2));
                 return false;
             }
             Piece piece = sq.getPiece();
@@ -192,13 +195,13 @@ public class ChessGame {
 
     public void move(Piece piece, Square square){
         if(!piece.getMovable().contains(square)){
-            System.out.println("Impossible move!");
+            // System.out.println("Impossible move!");
             return;
         }if(piece.color() != turn){
-            System.out.println("Not your turn!");
+            // System.out.println("Not your turn!");
             return;
         }if(piece instanceof Pawn && square.rank() == (piece.color().isWhite() ? 0 : DIM-1)){
-            System.out.println("Try again : the pawn should promote to another material");
+            // System.out.println("Try again : the pawn should promote to another material");
             return;
         }
         Move thisMove = new Move(piece, piece.getSquare(), square);
@@ -228,7 +231,6 @@ public class ChessGame {
         해당 rank에 다른 말이 있고 file엔 혼자면 true-false --> file 표기
         해당 file에 다른 말이 있고 rank엔 혼자면 false-true --> rank 표기
         file에도 rank에도 다른 말이 각각 있을 경우 false-false --> file, rank 병기
-        semantics가 좀 안맞긴 한다; 그래도 일단은 야쩔수없지
          */
         if(ambiguous){
             if(fileAmbiguous){
@@ -252,13 +254,13 @@ public class ChessGame {
                 reversibleMoveStack++;
             }
         }
-        setResult(0, false);
+        setResult(result, false);
     }
 
     // overload; if promotion
     public void move(Pawn piece, Square square, int promotedPieceIndic){
         if(!piece.getMovable().contains(square)){
-            System.out.println("Impossible move!");
+            // System.out.println("Impossible move!");
             return;
         } // 폰은 잡는 순간 pgn상 disambiguation이 이미 되기 때문에 굳이 관련해서 체크할 필요 x
         Move thisMove = new Move(piece, piece.getSquare(), square);
@@ -266,7 +268,7 @@ public class ChessGame {
         completeMove(thisMove);
         reversibleMoveStack = 0;
         fiftyMoveStack = 0;
-        setResult(0, false);
+        setResult(result, false);
     }
 
     public void completeMove(Move move){
@@ -306,12 +308,11 @@ public class ChessGame {
             moveTableData.add(mvpr);
         }
         moveCount++;
-        // todo : debug for algebraic notation
+        /*
         System.out.printf("your move was %d%s%s\n",
                 (moveCount+1)/2,
                 turn.isWhite() ? "..." : ".",
                 move.getAlgebraicNotation());
-        /*
         System.out.printf("Kingside : %s / Queenside : %s\n",
                 ((King)getPieces(turn).get("K")).isKingsideCastlingAvailable() ? "O" : "X",
                 ((King)getPieces(turn).get("K")).isQueensideCastlingAvailable() ? "O" : "X");
@@ -328,6 +329,13 @@ public class ChessGame {
             this.result = 0;
         }else if(forceFinish){
             this.result = result;
+            if(result == 0){
+                resultInfo = "mutual agreement";
+            }else if(result == 1){
+                resultInfo = "black's resignation";
+            }else if(result == -1){
+                resultInfo = "white's resignation";
+            }
         }
     }
 
@@ -335,18 +343,40 @@ public class ChessGame {
         return result;
     }
 
+    public String getResultInfo(){
+        return resultInfo;
+    }
+
     public boolean isWin(){
         // win of last moved player(=turn.opponent())
         if(lastMove == null) return false;
-        return lastMove.isMate() && lastMove.isCheck();
+        if(lastMove.isMate() && lastMove.isCheck()){
+            resultInfo = "checkmate";
+            return true;
+        }else return false;
     }
 
     public boolean isDraw() {
         if(lastMove == null) return false;
+        if(countPreviousEqualPosition() >= 2){
+            resultInfo = "threefold repetition";
+            return true;
+        }else if(fiftyMoveStack >= 100){
+            resultInfo = "fifty move rule";
+            return true;
+        }else if(!isMaterialSufficient()){
+            resultInfo = "material insufficiency";
+            return true;
+        }else if(lastMove.isMate() && !lastMove.isCheck()){
+            resultInfo = "stalemate";
+            return true;
+        }else return false;
+        /*
         return countPreviousEqualPosition() >= 2 // threefold repetition
                 || fiftyMoveStack >= 100 // fifty move rule
                 || !isMaterialSufficient() // insufficiency of material
                 || (lastMove.isMate() && !lastMove.isCheck()); // stalemate
+         */
     }
 
     public int countPreviousEqualPosition(){
@@ -451,7 +481,7 @@ public class ChessGame {
         // that is, moveCount == ind after its execution
         int ind = moveNum * 2 - (turn.isWhite() ? 2 : 1);
         if(ind<0 || ind>=moves.size()){
-            System.out.printf("input out of bound : %d\n", moveNum);
+            // System.out.printf("input out of bound : %d\n", moveNum);
             return;
         }
         Move undoMove;

@@ -53,26 +53,6 @@ public class Rook extends Piece {
                 }
             }
         }
-        // System.out.printf("--setMvTk-- %s\n", pieceId);
-        // game.printBoard(false);
-        // todo : debug
-        /*
-        System.out.printf("---movable--- %s\n", pieceId);
-        char[][] movBoard = new char[ChessGame.DIM][ChessGame.DIM];
-        for (char[] chars : movBoard) {
-            Arrays.fill(chars, '.');
-        }
-        movBoard[rank()][file()] = pieceId.charAt(pieceId.length()-1);
-        for(Square movsq : movable){
-            movBoard[movsq.rank()][movsq.file()] = '*';
-        }
-        for (char[] chars : movBoard) {
-            for (char aChar : chars) {
-                System.out.printf("%c ", aChar);
-            }
-            System.out.println();
-        }
-         */
         game.setNoMoreCastlingMoveCount(color, pieceId.charAt(0) == 'K' ? 0 : 1);
     }
 
@@ -86,8 +66,6 @@ public class Rook extends Piece {
         board[pRank][pFile] = 0;
         square.setPiece(this);
         noMoreCastling();
-        // System.out.printf("--makeMove-- %s\n", pieceId);
-        // game.printBoard(false);
     }
 
     private void noMoreCastling(){

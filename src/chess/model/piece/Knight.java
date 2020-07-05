@@ -51,27 +51,6 @@ public class Knight extends Piece {
                 }
             }
         }
-        // System.out.printf("--setMvTk-- %s\n", pieceId);
-        // game.printBoard(false);
-        // todo : debug
-        /*
-        System.out.printf("---movable--- %s\n", pieceId);
-        char[][] movBoard = new char[ChessGame.DIM][ChessGame.DIM];
-        for (char[] chars : movBoard) {
-            Arrays.fill(chars, '.');
-        }
-        movBoard[rank()][file()] = pieceId.charAt(pieceId.length()-1);
-        for(Square movsq : movable){
-            movBoard[movsq.rank()][movsq.file()] = '*';
-        }
-        for (char[] chars : movBoard) {
-            for (char aChar : chars) {
-                System.out.printf("%c ", aChar);
-            }
-            System.out.println();
-        }
-
-         */
     }
 
     @Override
@@ -83,7 +62,5 @@ public class Knight extends Piece {
         board[sRank][sFile] = board[pRank][pFile];
         board[pRank][pFile] = 0;
         square.setPiece(this);
-        // System.out.printf("--makeMove-- %s\n", pieceId);
-        // game.printBoard(false);
     }
 }

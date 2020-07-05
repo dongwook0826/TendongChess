@@ -9,8 +9,6 @@ public class MovePair {
     private final IntegerProperty moveNum;
     private final StringProperty whiteMoveNotation = new SimpleStringProperty("");
     private final StringProperty blackMoveNotation = new SimpleStringProperty("");
-    // private boolean whiteMoveDone = false;
-    // private boolean blackMoveDone = false;
 
     public MovePair(int moveNum) {
         this(moveNum, null, null);

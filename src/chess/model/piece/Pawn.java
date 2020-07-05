@@ -102,27 +102,6 @@ public class Pawn extends Piece {
                 rightEnPassantAvailable = false;
             }board[rank][file+1] = tmp;
         }
-        // System.out.printf("--setMvTk-- %s\n", pieceId);
-        // game.printBoard(false);
-        // todo : debug
-        /*
-        System.out.printf("---movable--- %s\n", pieceId);
-        char[][] movBoard = new char[ChessGame.DIM][ChessGame.DIM];
-        for (char[] chars : movBoard) {
-            Arrays.fill(chars, '.');
-        }
-        movBoard[rank()][file()] = pieceId.charAt(pieceId.length()-1);
-        for(Square movsq : movable){
-            movBoard[movsq.rank()][movsq.file()] = '*';
-        }
-        for (char[] chars : movBoard) {
-            for (char aChar : chars) {
-                System.out.printf("%c ", aChar);
-            }
-            System.out.println();
-        }
-
-         */
     }
 
     @Override
@@ -166,8 +145,6 @@ public class Pawn extends Piece {
         noMoreTwoSquareMove();
         noMoreLeftEnPassant();
         noMoreRightEnPassant();
-        // System.out.printf("--makeMove-- %s\n", pieceId);
-        // game.printBoard(false);
         game.setPawnsTwoSquareMoveCount(color, pieceId);
     }
 
@@ -195,8 +172,6 @@ public class Pawn extends Piece {
         takeable = null;
         move.thisIsPromotion(promotedPiece);
         // no worry for other boolean member values (since they must be all false already)
-        // System.out.printf("--promote-- %s\n", pieceId);
-        // game.printBoard(false);
         game.setPawnsTwoSquareMoveCount(color, pieceId);
     }
 

@@ -74,37 +74,20 @@ public class King extends Piece {
                 }
             }
         }
-        // todo : debug
-        /*
-        System.out.printf("---movable--- %s\n", pieceId);
-        char[][] movBoard = new char[ChessGame.DIM][ChessGame.DIM];
-        for (char[] chars : movBoard) {
-            Arrays.fill(chars, '.');
-        }
-        movBoard[rank()][file()] = pieceId.charAt(pieceId.length()-1);
-        for(Square movsq : movable){
-            movBoard[movsq.rank()][movsq.file()] = '*';
-        }
-        for (char[] chars : movBoard) {
-            for (char aChar : chars) {
-                System.out.printf("%c ", aChar);
-            }
-            System.out.println();
-        }
-
-         */
     }
 
+    /*
     public boolean isKingsideCastlingAvailable(){
         return KingsideCastlingAvailable;
     }
 
-    public void setKingsideCastlingAvailable(){
-        KingsideCastlingAvailable = true;
-    }
-
     public boolean isQueensideCastlingAvailable(){
         return QueensideCastlingAvailable;
+    }
+     */
+
+    public void setKingsideCastlingAvailable(){
+        KingsideCastlingAvailable = true;
     }
 
     public void setQueensideCastlingAvailable(){

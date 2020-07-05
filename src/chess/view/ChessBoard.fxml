@@ -28,12 +28,16 @@
         <Menu mnemonicParsing="false" text="Game">
             <MenuItem mnemonicParsing="false" onAction="#gameInitialize" text="New game" />
          <MenuItem disable="true" mnemonicParsing="false" text="Saved game..." />
+         <SeparatorMenuItem mnemonicParsing="false" />
+         <MenuItem mnemonicParsing="false" onAction="#resign" text="Resign" />
+         <MenuItem mnemonicParsing="false" onAction="#offerDraw" text="Offer a draw" />
+         <MenuItem disable="true" mnemonicParsing="false" text="Force the finish" />
         </Menu>
         <Menu mnemonicParsing="false" text="Config">
             <MenuItem disable="true" mnemonicParsing="false" text="Configuration" />
         </Menu>
         <Menu mnemonicParsing="false" text="Info">
-            <MenuItem mnemonicParsing="false" text="About..." />
+            <MenuItem mnemonicParsing="false" onAction="#showAppInfo" text="About..." />
         </Menu>
     </MenuBar>
     <HBox alignment="CENTER" prefHeight="700.0" prefWidth="915.0">
@@ -270,7 +274,7 @@
                 </ImageView>
             </Pane>
         </AnchorPane>
-        <TableView fx:id="moveTable" prefHeight="700.0" prefWidth="215.0" styleClass="table-column" stylesheets="@MoveTableAlign.css">
+        <TableView fx:id="moveTable" prefHeight="700.0" prefWidth="215.0" styleClass="table-column" stylesheets="@/chess/view/MoveTableAlign.css">
             <columns>
                 <TableColumn fx:id="moveNumColumn" editable="false" prefWidth="50.0" text="move" />
                 <TableColumn fx:id="whiteMoveNotationColumn" editable="false" prefWidth="75.0" sortable="false" text="White" />
