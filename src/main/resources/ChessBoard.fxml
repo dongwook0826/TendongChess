@@ -17,7 +17,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="725.0" prefWidth="915.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chess.view.ChessController">
+<VBox prefHeight="725.0" prefWidth="915.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chess.view.ChessController">
     <MenuBar>
         <Menu mnemonicParsing="false" text="File">
          <MenuItem disable="true" mnemonicParsing="false" text="Save the game as PGN" />
@@ -270,11 +270,11 @@
                     </Text>
                 </AnchorPane>
                 <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="670.0" layoutY="670.0" onMouseClicked="#swap" pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/chess/view/image/util/swap_icon.png" />
+                    <Image url="@image/util/swap_icon.png" />
                 </ImageView>
             </Pane>
         </AnchorPane>
-        <TableView fx:id="moveTable" prefHeight="700.0" prefWidth="215.0" styleClass="table-column" stylesheets="@/chess/view/MoveTableAlign.css">
+        <TableView fx:id="moveTable" prefHeight="700.0" prefWidth="215.0" styleClass="table-column" stylesheets="@style/MoveTableAlign.css">
             <columns>
                 <TableColumn fx:id="moveNumColumn" editable="false" prefWidth="50.0" text="move" />
                 <TableColumn fx:id="whiteMoveNotationColumn" editable="false" prefWidth="75.0" sortable="false" text="White" />

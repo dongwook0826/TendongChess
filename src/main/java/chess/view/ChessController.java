@@ -112,19 +112,19 @@ public class ChessController {
     @FXML private Rectangle square_77;
 
     // ------------- Piece Images --------------
-    private final Image white_King = new Image("chess/view/image/piece/White_King.png", 80.0d, 80.0d, true, true);
-    private final Image white_Queen = new Image("chess/view/image/piece/White_Queen.png", 80.0d, 80.0d, true, true);
-    private final Image white_Rook = new Image("chess/view/image/piece/White_Rook.png", 80.0d, 80.0d, true, true);
-    private final Image white_Knight = new Image("chess/view/image/piece/White_Knight.png", 80.0d, 80.0d, true, true);
-    private final Image white_Bishop = new Image("chess/view/image/piece/White_Bishop.png", 80.0d, 80.0d, true, true);
-    private final Image white_Pawn = new Image("chess/view/image/piece/White_Pawn.png", 80.0d, 80.0d, true, true);
+    private final Image white_King;// = new Image("image/piece/White_King.png", 80.0d, 80.0d, true, true);
+    private final Image white_Queen;// = new Image("image/piece/White_Queen.png", 80.0d, 80.0d, true, true);
+    private final Image white_Rook;// = new Image("image/piece/White_Rook.png", 80.0d, 80.0d, true, true);
+    private final Image white_Knight;// = new Image("image/piece/White_Knight.png", 80.0d, 80.0d, true, true);
+    private final Image white_Bishop;// = new Image("image/piece/White_Bishop.png", 80.0d, 80.0d, true, true);
+    private final Image white_Pawn;// = new Image("image/piece/White_Pawn.png", 80.0d, 80.0d, true, true);
 
-    private final Image black_King = new Image("chess/view/image/piece/Black_King.png", 80.0d, 80.0d, true, true);
-    private final Image black_Queen = new Image("chess/view/image/piece/Black_Queen.png", 80.0d, 80.0d, true, true);
-    private final Image black_Rook = new Image("chess/view/image/piece/Black_Rook.png", 80.0d, 80.0d, true, true);
-    private final Image black_Knight = new Image("chess/view/image/piece/Black_Knight.png", 80.0d, 80.0d, true, true);
-    private final Image black_Bishop = new Image("chess/view/image/piece/Black_Bishop.png", 80.0d, 80.0d, true, true);
-    private final Image black_Pawn = new Image("chess/view/image/piece/Black_Pawn.png", 80.0d, 80.0d, true, true);
+    private final Image black_King;// = new Image("image/piece/Black_King.png", 80.0d, 80.0d, true, true);
+    private final Image black_Queen;// = new Image("image/piece/Black_Queen.png", 80.0d, 80.0d, true, true);
+    private final Image black_Rook;// = new Image("image/piece/Black_Rook.png", 80.0d, 80.0d, true, true);
+    private final Image black_Knight;// = new Image("image/piece/Black_Knight.png", 80.0d, 80.0d, true, true);
+    private final Image black_Bishop;// = new Image("image/piece/Black_Bishop.png", 80.0d, 80.0d, true, true);
+    private final Image black_Pawn;// = new Image("image/piece/Black_Pawn.png", 80.0d, 80.0d, true, true);
 
     // image_(file/rank), from upper left to lower right
     @FXML private ImageView image_00;
@@ -262,23 +262,37 @@ public class ChessController {
     private boolean gameFinished = false;
 
     {
+        white_King = new Image(getClass().getResource("/image/piece/White_King.png").toExternalForm(), 80.0d, 80.0d, true, true);
+        white_Queen = new Image(getClass().getResource("/image/piece/White_Queen.png").toExternalForm(), 80.0d, 80.0d, true, true);
+        white_Rook = new Image(getClass().getResource("/image/piece/White_Rook.png").toExternalForm(), 80.0d, 80.0d, true, true);
+        white_Knight = new Image(getClass().getResource("/image/piece/White_Knight.png").toExternalForm(), 80.0d, 80.0d, true, true);
+        white_Bishop = new Image(getClass().getResource("/image/piece/White_Bishop.png").toExternalForm(), 80.0d, 80.0d, true, true);
+        white_Pawn = new Image(getClass().getResource("/image/piece/White_Pawn.png").toExternalForm(), 80.0d, 80.0d, true, true);
+
+        black_King = new Image(getClass().getResource("/image/piece/Black_King.png").toExternalForm(), 80.0d, 80.0d, true, true);
+        black_Queen = new Image(getClass().getResource("/image/piece/Black_Queen.png").toExternalForm(), 80.0d, 80.0d, true, true);
+        black_Rook = new Image(getClass().getResource("/image/piece/Black_Rook.png").toExternalForm(), 80.0d, 80.0d, true, true);
+        black_Knight = new Image(getClass().getResource("/image/piece/Black_Knight.png").toExternalForm(), 80.0d, 80.0d, true, true);
+        black_Bishop = new Image(getClass().getResource("/image/piece/Black_Bishop.png").toExternalForm(), 80.0d, 80.0d, true, true);
+        black_Pawn = new Image(getClass().getResource("/image/piece/Black_Pawn.png").toExternalForm(), 80.0d, 80.0d, true, true);
+
         whitePromToQueen.setGraphic(new ImageView(
-                new Image("chess/view/image/piece/White_Queen.png", 30.0d, 30.0d, true, true)));
+                new Image(getClass().getResource("/image/piece/White_Queen.png").toExternalForm(), 30.0d, 30.0d, true, true)));
         whitePromToRook.setGraphic(new ImageView(
-                new Image("chess/view/image/piece/White_Rook.png", 30.0d, 30.0d, true, true)));
+                new Image(getClass().getResource("/image/piece/White_Rook.png").toExternalForm(), 30.0d, 30.0d, true, true)));
         whitePromToBishop.setGraphic(new ImageView(
-                new Image("chess/view/image/piece/White_Bishop.png", 30.0d, 30.0d, true, true)));
+                new Image(getClass().getResource("/image/piece/White_Bishop.png").toExternalForm(), 30.0d, 30.0d, true, true)));
         whitePromToKnight.setGraphic(new ImageView(
-                new Image("chess/view/image/piece/White_Knight.png", 30.0d, 30.0d, true, true)));
+                new Image(getClass().getResource("/image/piece/White_Knight.png").toExternalForm(), 30.0d, 30.0d, true, true)));
 
         blackPromToQueen.setGraphic(new ImageView(
-                new Image("chess/view/image/piece/Black_Queen.png", 30.0d, 30.0d, true, true)));
+                new Image(getClass().getResource("/image/piece/Black_Queen.png").toExternalForm(), 30.0d, 30.0d, true, true)));
         blackPromToRook.setGraphic(new ImageView(
-                new Image("chess/view/image/piece/Black_Rook.png", 30.0d, 30.0d, true, true)));
+                new Image(getClass().getResource("/image/piece/Black_Rook.png").toExternalForm(), 30.0d, 30.0d, true, true)));
         blackPromToBishop.setGraphic(new ImageView(
-                new Image("chess/view/image/piece/Black_Bishop.png", 30.0d, 30.0d, true, true)));
+                new Image(getClass().getResource("/image/piece/Black_Bishop.png").toExternalForm(), 30.0d, 30.0d, true, true)));
         blackPromToKnight.setGraphic(new ImageView(
-                new Image("chess/view/image/piece/Black_Knight.png", 30.0d, 30.0d, true, true)));
+                new Image(getClass().getResource("/image/piece/Black_Bishop.png").toExternalForm(), 30.0d, 30.0d, true, true)));
 
         whitePromotionMenu.getItems().addAll(whitePromToQueen, whitePromToRook, whitePromToBishop, whitePromToKnight);
         blackPromotionMenu.getItems().addAll(blackPromToQueen, blackPromToRook, blackPromToBishop, blackPromToKnight);
@@ -459,16 +473,15 @@ public class ChessController {
     @FXML
     private void showAppInfo() throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader();
-        Parent appInfo = fxmlLoader.load(getClass().getResource("AppInfo.fxml").openStream());
+        // System.out.println(getClass().getResource("/AppInfo.fxml"));
+        fxmlLoader.setLocation(getClass().getResource("/AppInfo.fxml"));
+        Parent appInfo = fxmlLoader.load(/*getClass().getResource("/AppInfo.fxml").openStream()*/);
         AppInfoController infoCtrl = fxmlLoader.getController();
         infoCtrl.setChessApp(chessApp);
         Stage appInfoStage = new Stage();
         appInfoStage.setTitle("TendongChess Info");
         appInfoStage.setScene(new Scene(appInfo, 500, 250));
-        appInfoStage.setMaxHeight(290);
-        appInfoStage.setMinHeight(290);
-        appInfoStage.setMaxWidth(515);
-        appInfoStage.setMinWidth(515);
+        appInfoStage.setResizable(false);
         appInfoStage.show();
     }
 
