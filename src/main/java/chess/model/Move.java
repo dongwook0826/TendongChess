@@ -139,6 +139,7 @@ public class Move {
         isEnPassant = true;
         this.capturedPiece = capturedPiece;
         capturedPiece.setTaken();
+        capturedPiece.getSquare().setNullPiece();
     }
 
     public boolean isCapture(){

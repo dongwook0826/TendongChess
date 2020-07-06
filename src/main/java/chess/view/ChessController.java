@@ -427,6 +427,8 @@ public class ChessController {
 
     @FXML
     private void resign(){
+        int res = chessGame.getResult();
+        if(res >= -1 && res <= 1) return;
         boolean turn = chessGame.getTurn().isWhite();
         Alert resignAlert = new Alert(Alert.AlertType.CONFIRMATION);
         resignAlert.setTitle("Resign");
@@ -442,6 +444,8 @@ public class ChessController {
 
     @FXML
     private void offerDraw(){
+        int res = chessGame.getResult();
+        if(res >= -1 && res <= 1) return;
         boolean turn = chessGame.getTurn().isWhite();
         Alert drawAlert = new Alert(Alert.AlertType.CONFIRMATION);
         drawAlert.setTitle("Draw offer");

@@ -44,7 +44,7 @@ public abstract class Piece {
             this.square.setNullPiece();
         }
         this.square = square;
-        if(square.getPiece() != this) square.setPiece(this);
+        if(square != null && square.getPiece() != this) square.setPiece(this);
     }
 
     public Square getSquare(){
@@ -82,7 +82,7 @@ public abstract class Piece {
 
     public void undoTaken(){
         taken = false;
-        game.onePieceTaken(color, false);
+        game.onePieceTaken(color, true);
     }
 
     public boolean isTaken(){

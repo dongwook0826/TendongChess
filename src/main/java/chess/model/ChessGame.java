@@ -313,6 +313,10 @@ public class ChessGame {
                 (moveCount+1)/2,
                 turn.isWhite() ? "..." : ".",
                 move.getAlgebraicNotation());
+        System.out.println("board : ");
+        printBoard(false);
+        System.out.println("instboard : ");
+        printInstanceBoard(false);
         System.out.printf("Kingside : %s / Queenside : %s\n",
                 ((King)getPieces(turn).get("K")).isKingsideCastlingAvailable() ? "O" : "X",
                 ((King)getPieces(turn).get("K")).isQueensideCastlingAvailable() ? "O" : "X");
@@ -499,7 +503,11 @@ public class ChessGame {
             if(undoMove.isCapture()){
                 Piece capturedPiece = undoMove.getCapturedPiece();
                 capturedPiece.undoTaken();
-                capturedPiece.setSquare(undoMove.getToSquare());
+                Square resetSq = undoMove.getToSquare();
+                if(undoMove.isEnPassant()){
+                    int rk = undoMove.getFromSquare().rank(), fl = resetSq.file();
+                    resetSq = squareOn(fl, rk);
+                }capturedPiece.setSquare(resetSq);
             }else if(undoMove.isKingsideCastling()){
                 getPieces(color).get("KR").setSquare(squareOn(7, color.isWhite() ? 7 : 0));
                 movedPiece.setSquare(squareOn(4, color.isWhite() ? 7 : 0));
@@ -592,6 +600,12 @@ public class ChessGame {
         }
         allSquares.forEach((acn, sq) -> sq.setReachable());
         result = Integer.MIN_VALUE;
+        /*
+        System.out.println("board : ");
+        printBoard(false);
+        System.out.println("instboard : ");
+        printInstanceBoard(false);
+         */
     }
 
     public void setNoMoreCastlingMoveCount(PieceColor color, int sideIndic){
