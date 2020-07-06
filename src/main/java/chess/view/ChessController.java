@@ -292,7 +292,7 @@ public class ChessController {
         blackPromToBishop.setGraphic(new ImageView(
                 new Image(getClass().getResource("/image/piece/Black_Bishop.png").toExternalForm(), 30.0d, 30.0d, true, true)));
         blackPromToKnight.setGraphic(new ImageView(
-                new Image(getClass().getResource("/image/piece/Black_Bishop.png").toExternalForm(), 30.0d, 30.0d, true, true)));
+                new Image(getClass().getResource("/image/piece/Black_Knight.png").toExternalForm(), 30.0d, 30.0d, true, true)));
 
         whitePromotionMenu.getItems().addAll(whitePromToQueen, whitePromToRook, whitePromToBishop, whitePromToKnight);
         blackPromotionMenu.getItems().addAll(blackPromToQueen, blackPromToRook, blackPromToBishop, blackPromToKnight);
@@ -600,6 +600,7 @@ public class ChessController {
                          */
                         chessGame.move(uci.toString());
                         checkResult();
+                        setPieceImages(currentBoard, isSwapped, false);
                     });
                 }else if(targetImage.getImage() == black_Pawn
                         && targetIndex[0] == (isSwapped ? 0 : 7)){
@@ -624,6 +625,7 @@ public class ChessController {
                          */
                         chessGame.move(uci.toString());
                         checkResult();
+                        setPieceImages(currentBoard, isSwapped, false);
                     });
                 } else {
                     /*
