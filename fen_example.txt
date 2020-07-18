@@ -1,0 +1,9 @@
+FEN string format
+https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation
+
+1. Piece placement(8x8 board in one string)
+2. active color(w or b)
+3. castling availability(KQkq -> Kkq -> Kq -> ...)
+4. en passant target square(one square behind the pawn which just advanced two squares(in acn); otherwise -)
+5. halfmove clock(resets to 0 whenever captured or pawn maneuvered; otherwise ++)
+5. fullmove count (1-1-2-2-3-3-...)

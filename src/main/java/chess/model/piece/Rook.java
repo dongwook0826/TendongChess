@@ -53,7 +53,6 @@ public class Rook extends Piece {
                 }
             }
         }
-        game.setNoMoreCastlingMoveCount(color, pieceId.charAt(0) == 'K' ? 0 : 1);
     }
 
     @Override
@@ -78,5 +77,6 @@ public class Rook extends Piece {
         }else{ // if(pieceId.charAt(0) == 'Q')
             myKing.noMoreQueensideCastling();
         }
+        game.setNoMoreCastlingMoveCount(color, pieceId.charAt(0) == 'K' ? 0 : 1);
     }
 }

@@ -41,8 +41,8 @@ public class ChessGame {
     private final HashMap<String, Piece> blackPieces = new HashMap<>();
     private int whiteAliveCnt, blackAliveCnt;
     private final ArrayList<Move> moves = new ArrayList<>();
-    // todo : define moveTableData
     private final ObservableList<MovePair> moveTableData = FXCollections.observableArrayList();
+    // for showing on GUI
     private Move lastMove = null;
     private int moveCount = 0;
     private int reversibleMoveStack = 0;
@@ -479,7 +479,6 @@ public class ChessGame {
     }
 
     public void takeback(int moveNum, PieceColor turn){
-        // todo
         // moveNum starts from 1, not 0
         // go back to just before moves.get(ind) is played(= turn is to make next move)
         // that is, moveCount == ind after its execution
@@ -647,25 +646,6 @@ public class ChessGame {
         }
     }
 
-    /*
-    public void undo(){
-        // todo : undo the last move in this.moves
-        if(lastMove == null){
-            System.out.println("No more undoable move!");
-            return;
-        }
-
-    }
-
-    public void redo(){
-        // todo : redo the last undone move
-        if(lastMove == moves.getLast()){
-            System.out.println("No more redoable move!");
-            return;
-        }
-
-    }*/
-
     // ----------- getter & setter ------------
 
     public Square squareOn(int file, int rank){
@@ -754,7 +734,6 @@ public class ChessGame {
     }
 
     public void printInstanceBoard(boolean flipBoard){
-        // todo : correct printing format(especially new line)
         int[][] instBoard = new int[DIM][DIM];
         whitePieces.forEach((id, pc) -> {
             if(!(pc.isTaken() || (pc instanceof Pawn && ((Pawn)pc).isPromoted()))){

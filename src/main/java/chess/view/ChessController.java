@@ -258,6 +258,7 @@ public class ChessController {
 
     private Point2D dragOffset = new Point2D(0.0d, 0.0d);
 
+    private int currentShowingMoveInd = -1;
     private boolean allMoveLocked = false;
     private boolean gameFinished = false;
 
@@ -372,6 +373,19 @@ public class ChessController {
             return cell;
         });
         moveTable.setItems(chessGame.getMoveTableData());
+        moveTable.getSelectionModel().setCellSelectionEnabled(true);
+        moveTable.setOnKeyPressed(evt -> {
+            switch(evt.getCode()){
+                case UP, LEFT -> {
+                    if (currentShowingMoveInd > -1)
+                        showBoardHistory(--currentShowingMoveInd);
+                }
+                case DOWN, RIGHT -> {
+                    if (currentShowingMoveInd < chessGame.getMoveCount() - 1)
+                        showBoardHistory(++currentShowingMoveInd);
+                }
+            }
+        });
     }
 
     private void handleTakebackRequest(MovePair movePair, boolean isWhite){
@@ -599,6 +613,10 @@ public class ChessController {
                                 holdingIndex[0], holdingIndex[1], targetIndex[0], targetIndex[1], uci.toString());
                          */
                         chessGame.move(uci.toString());
+                        currentShowingMoveInd++;
+                        moveTable.getSelectionModel().select(currentShowingMoveInd/2,
+                                currentShowingMoveInd%2 == 0 ? whiteMoveNotationColumn : blackMoveNotationColumn);
+                        // moveTable.getFocusModel().focus(currentShowingMoveInd/2);
                         checkResult();
                         setPieceImages(currentBoard, isSwapped, false);
                     });
@@ -624,6 +642,10 @@ public class ChessController {
                                 holdingIndex[0], holdingIndex[1], targetIndex[0], targetIndex[1], uci.toString());
                          */
                         chessGame.move(uci.toString());
+                        currentShowingMoveInd++;
+                        moveTable.getSelectionModel().select(currentShowingMoveInd/2,
+                                currentShowingMoveInd%2 == 0 ? whiteMoveNotationColumn : blackMoveNotationColumn);
+                        // moveTable.getFocusModel().focus(currentShowingMoveInd/2);
                         checkResult();
                         setPieceImages(currentBoard, isSwapped, false);
                     });
@@ -633,6 +655,10 @@ public class ChessController {
                             holdingIndex[0], holdingIndex[1], targetIndex[0], targetIndex[1], uci.toString());
                      */
                     chessGame.move(uci.toString());
+                    currentShowingMoveInd++;
+                    moveTable.getSelectionModel().select(currentShowingMoveInd/2,
+                            currentShowingMoveInd%2 == 0 ? whiteMoveNotationColumn : blackMoveNotationColumn);
+                    // moveTable.getFocusModel().focus(currentShowingMoveInd/2);
                     checkResult();
                 }
                 squareHighlightsIndex[0] = holdingIndex;
@@ -787,9 +813,20 @@ public class ChessController {
         }
     }
 
+    private void showBoardHistory(int moveInd){
+        showBoardHistory((moveInd+2)/2, moveInd%2==0);
+    }
+
     private void showBoardHistory(int moveNum, boolean isWhite){
         // 0 -> 1T -> 1F -> 2T -> 2F -> 3T -> 3F -> ...
         int moveInd = moveNum == 0 ? -1 : (moveNum*2 - (isWhite ? 2 : 1));
+        if(moveNum <= 0){
+            moveTable.getSelectionModel().select(0, moveNumColumn);
+            // moveTable.getFocusModel().focus(0);
+        }else{
+            moveTable.getSelectionModel().select(moveNum-1, isWhite ? whiteMoveNotationColumn : blackMoveNotationColumn);
+            // moveTable.getFocusModel().focus(moveNum-1);
+        }
         if(moveInd >= chessGame.getMoveCount()) moveInd = chessGame.getMoveCount()-1;
         setPieceImages(moveNum == 0 ? ChessGame.INITIAL_BOARD :
                 chessGame.getMoves().get(moveInd).getBoardHistory(),
@@ -809,6 +846,7 @@ public class ChessController {
             highlightSquare(squareHighlightsIndex[0]);
             highlightSquare(squareHighlightsIndex[1]);
         }
+        currentShowingMoveInd = moveInd;
         allMoveLocked = moveInd != chessGame.getMoveCount()-1;
     }
 

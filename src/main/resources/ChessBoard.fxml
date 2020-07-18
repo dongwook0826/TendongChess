@@ -276,7 +276,7 @@
         </AnchorPane>
         <TableView fx:id="moveTable" prefHeight="700.0" prefWidth="215.0" styleClass="table-column" stylesheets="@style/MoveTableAlign.css">
             <columns>
-                <TableColumn fx:id="moveNumColumn" editable="false" prefWidth="50.0" text="move" />
+                <TableColumn fx:id="moveNumColumn" editable="false" prefWidth="50.0" sortable="false" text="move" />
                 <TableColumn fx:id="whiteMoveNotationColumn" editable="false" prefWidth="75.0" sortable="false" text="White" />
                 <TableColumn fx:id="blackMoveNotationColumn" editable="false" prefWidth="75.0" sortable="false" text="Black" />
             </columns>
