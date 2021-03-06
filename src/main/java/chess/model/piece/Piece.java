@@ -21,23 +21,10 @@ public abstract class Piece {
         this.color = color;
     }
 
-    /*
-    public Piece(Square square, boolean color){
-        this(color);
-        this.square = square;
-    }
-     */
-
     public Piece(ChessGame game, PieceColor color, String pieceId){
         this(game, color);
         this.pieceId = pieceId;
     }
-
-    /*
-    public void setPieceId(String pieceId){
-        this.pieceId = pieceId;
-    }
-     */
 
     public void setSquare(Square square){
         if(this.square != null){
@@ -54,13 +41,6 @@ public abstract class Piece {
     public void thisIsMyKing(){
         myKing = (King)game.getPieces(color).get("K");
     }
-
-    /*
-    public void thisIsMyKing(King myKing){
-        assert myKing != null : "no king instance";
-        this.myKing = myKing;
-    }
-     */
 
     public int file() { return square.file(); }
 

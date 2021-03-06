@@ -828,7 +828,7 @@ public class ChessController {
             // moveTable.getFocusModel().focus(moveNum-1);
         }
         if(moveInd >= chessGame.getMoveCount()) moveInd = chessGame.getMoveCount()-1;
-        setPieceImages(moveNum == 0 ? ChessGame.INITIAL_BOARD :
+        setPieceImages(moveNum == 0 ? chessGame.getInitBoard() :
                 chessGame.getMoves().get(moveInd).getBoardHistory(),
                 isSwapped, false);
         clearHighlightSquare();

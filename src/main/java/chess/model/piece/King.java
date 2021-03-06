@@ -3,7 +3,6 @@ package chess.model.piece;
 import chess.model.*;
 import chess.model.board.*;
 
-// import java.util.Arrays;
 import java.util.HashSet;
 
 public class King extends Piece {
@@ -76,16 +75,6 @@ public class King extends Piece {
         }
     }
 
-    /*
-    public boolean isKingsideCastlingAvailable(){
-        return KingsideCastlingAvailable;
-    }
-
-    public boolean isQueensideCastlingAvailable(){
-        return QueensideCastlingAvailable;
-    }
-     */
-
     public void setKingsideCastlingAvailable(){
         KingsideCastlingAvailable = true;
     }
@@ -116,8 +105,8 @@ public class King extends Piece {
             board[pRank][0] = 0;
             move.thisIsCastling(false);
         }
-        // System.out.printf("--makeMove-- %s\n", pieceId);
-        // game.printBoard(false);
+        noMoreKingsideCastling();
+        noMoreQueensideCastling();
         game.setNoMoreCastlingMoveCount(color, 2);
     }
 
@@ -140,7 +129,6 @@ public class King extends Piece {
             game.getPieces(color).get("KR").setSquare(game.squareOn(file()-1, rank()));
         }else{
             game.getPieces(color).get("QR").setSquare(game.squareOn(file()+1, rank()));
-        }noMoreKingsideCastling();
-        noMoreQueensideCastling();
+        }
     }
 }

@@ -13,7 +13,7 @@ public class ChessGame {
     String title;
 
     public static final int DIM = 8;
-    public static final int[][] INITIAL_BOARD = {
+    public static final int[][] DEFAULT_BOARD = {
             /*
              * white : positive / black : negative / empty : 0
              * pawn   : 1
@@ -33,6 +33,7 @@ public class ChessGame {
             { 2, 3, 4, 5, 6, 4, 3, 2}
     };
 
+    private final int[][] initBoard = new int[DIM][];
     private final int[][] board = new int[DIM][];
 
     private PieceColor turn = PieceColor.WHITE;
@@ -61,20 +62,6 @@ public class ChessGame {
     // 흑9수에 b폰이 처음 이동했으면 .get("QNP")[1] 성분을 9*2 = 18로
     // rollback 후 폰에 대한 2칸 이동 권한 주입에 사용
 
-    private final String[] pieceIds = {
-            "QR", "QN", "QB", "Q", "K", "KB", "KN", "KR",
-            "QRP", "QNP", "QBP", "QP", "KP", "KBP", "KNP", "KRP"
-    };// if promoted, then =Q, =R, =N, =B added to the new piece's Id
-    private final String[][] startPositions = {
-            {
-                    "a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1",
-                    "a2", "b2", "c2", "d2", "e2", "f2", "g2", "h2"
-            }, {
-                    "a8", "b8", "c8", "d8", "e8", "f8", "g8", "h8",
-                    "a7", "b7", "c7", "d7", "e7", "f7", "g7", "h7"
-            }
-    };
-
     private int result = Integer.MIN_VALUE;
     // 1, 0, -1 for white win, draw, black win respectively
     private String resultInfo = "";
@@ -93,9 +80,14 @@ public class ChessGame {
         };
     }
 
-    { // ----- instance initialization block -----
+    // ------------ generator ---------------
+
+    public ChessGame() {
+        title = String.format("NewGame_%d", System.currentTimeMillis());
+
         for(int i=0; i<DIM; i++){
-            board[i] = INITIAL_BOARD[i].clone();
+            initBoard[i] = DEFAULT_BOARD[i].clone();
+            board[i] = DEFAULT_BOARD[i].clone();
         }
         for(int r=0; r<DIM; r++){
             for(int f=0; f<DIM; f++){
@@ -103,60 +95,52 @@ public class ChessGame {
                 allSquares.put(sq.toString(), sq);
             }
         }
-        for(int p=0; p<pieceIds.length; p++){
+        // if promoted, then =Q, =R, =N, =B added to the new piece's Id
+        String[] pieceIds = {
+                "QR", "QN", "QB", "Q", "K", "KB", "KN", "KR",
+                "QRP", "QNP", "QBP", "QP", "KP", "KBP", "KNP", "KRP"
+        };
+        for(int p = 0; p< pieceIds.length; p++){
             whitePieces.put(pieceIds[p], genPiece(PieceColor.WHITE, pieceIds[p]));
+            String[][] startPositions = {
+                    {
+                            "a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1",
+                            "a2", "b2", "c2", "d2", "e2", "f2", "g2", "h2"
+                    }, {
+                            "a8", "b8", "c8", "d8", "e8", "f8", "g8", "h8",
+                            "a7", "b7", "c7", "d7", "e7", "f7", "g7", "h7"
+                    }
+            };
             whitePieces.get(pieceIds[p]).setSquare(allSquares.get(startPositions[0][p]));
-            // allSquares.get(startPositions[0][p]).setPiece(whitePieces.get(pieceIds[p]));
             blackPieces.put(pieceIds[p], genPiece(PieceColor.BLACK, pieceIds[p]));
             blackPieces.get(pieceIds[p]).setSquare(allSquares.get(startPositions[1][p]));
-            // allSquares.get(startPositions[1][p]).setPiece(blackPieces.get(pieceIds[p]));
         }
         whitePieces.forEach((id, piece) -> piece.thisIsMyKing());
         blackPieces.forEach((id, piece) -> piece.thisIsMyKing());
-        /*
-        for(int i=0; i<pieceIds.length; i++){
-            whitePieces.get(pieceIds[i]).setSquare(allSquares.get(startPositions[0][i]));
-            blackPieces.get(pieceIds[i]).setSquare(allSquares.get(startPositions[1][i]));
-        }*/
+
         allSquares.forEach((id, square) -> square.setIsAttacked());
         whitePieces.forEach((id, piece) -> piece.setMovableTakeable());
         allSquares.forEach((id, square) -> square.setReachable());
         whiteAliveCnt = whitePieces.size();
         blackAliveCnt = blackPieces.size();
-        for(int i=DIM; i<pieceIds.length; i++){
+        for(int i = DIM; i< pieceIds.length; i++){
             whitePawnsFirstMoveCount.put(pieceIds[i], -1);
             blackPawnsFirstMoveCount.put(pieceIds[i], -1);
         }
     }
 
-    // ------------ generator ---------------
-
-    public ChessGame() {
-        title = String.format("NewGame_%d", System.currentTimeMillis());
-        // System.out.printf("Let's play a chess!\n%s\n", title);
-    }
-    /*
-    public ChessGame(String title){
-        this.title = title;
-        System.out.printf("Let's play a chess!\n%s\n", title);
-    }
-     */
-
     // ------------- making move ---------------
 
     public boolean move(String uci){
         if(uci.length() < 4 || uci.length() > 5){
-            // System.out.printf("invalid notation length : %d\n", uci.length());
             return false;
         }
         if(!(inRange(uci.charAt(0)-'a') && inRange('8'-uci.charAt(1))
                 && inRange(uci.charAt(2)-'a') && inRange('8'-uci.charAt(3)))){
-            // System.out.println("incorrect UCI notation format");
             return false;
         }
         Square sq = squareOn(uci.charAt(0)-'a', '8'-uci.charAt(1));
         if(sq.isEmpty() || sq.getPiece().color() != turn){
-            // System.out.println("Not your turn!");
             return false;
         }
         if(uci.length() == 5){
@@ -166,12 +150,10 @@ public class ChessGame {
                 b7a8n : move b7 pawn and take a8, and promote to knight
              */
             if(sq.isEmpty()){
-                // System.out.printf("no piece on the square : %s\n", uci.substring(0,2));
                 return false;
             }
             Piece piece = sq.getPiece();
             if(!(piece instanceof Pawn)){
-                // System.out.println("piece on the square is not a pawn");
                 return false;
             }
             int prom = switch(uci.charAt(uci.length()-1)){
@@ -184,7 +166,6 @@ public class ChessGame {
             move((Pawn)piece, squareOn(uci.charAt(2)-'a', '8'-uci.charAt(3)), prom);
         }else {
             if(sq.isEmpty()){
-                // System.out.printf("no piece on the square : %s\n", uci.substring(0,2));
                 return false;
             }
             Piece piece = sq.getPiece();
@@ -195,13 +176,10 @@ public class ChessGame {
 
     public void move(Piece piece, Square square){
         if(!piece.getMovable().contains(square)){
-            // System.out.println("Impossible move!");
             return;
         }if(piece.color() != turn){
-            // System.out.println("Not your turn!");
             return;
         }if(piece instanceof Pawn && square.rank() == (piece.color().isWhite() ? 0 : DIM-1)){
-            // System.out.println("Try again : the pawn should promote to another material");
             return;
         }
         Move thisMove = new Move(piece, piece.getSquare(), square);
@@ -260,7 +238,6 @@ public class ChessGame {
     // overload; if promotion
     public void move(Pawn piece, Square square, int promotedPieceIndic){
         if(!piece.getMovable().contains(square)){
-            // System.out.println("Impossible move!");
             return;
         } // 폰은 잡는 순간 pgn상 disambiguation이 이미 되기 때문에 굳이 관련해서 체크할 필요 x
         Move thisMove = new Move(piece, piece.getSquare(), square);
@@ -277,7 +254,6 @@ public class ChessGame {
         allSquares.forEach((acn, sq) -> sq.setIsAttacked());
         // -------- mate checking --------
         boolean movePossible = false;
-        // getPieces(turn).forEach((id, pc) -> pc.setMovableTakeable());
         for(String id : getPieces(turn).keySet()){
             Piece pc = getPieces(turn).get(id);
             if(pc.isTaken() || (pc instanceof Pawn && ((Pawn)pc).isPromoted())) continue;
@@ -308,19 +284,6 @@ public class ChessGame {
             moveTableData.add(mvpr);
         }
         moveCount++;
-        /*
-        System.out.printf("your move was %d%s%s\n",
-                (moveCount+1)/2,
-                turn.isWhite() ? "..." : ".",
-                move.getAlgebraicNotation());
-        System.out.println("board : ");
-        printBoard(false);
-        System.out.println("instboard : ");
-        printInstanceBoard(false);
-        System.out.printf("Kingside : %s / Queenside : %s\n",
-                ((King)getPieces(turn).get("K")).isKingsideCastlingAvailable() ? "O" : "X",
-                ((King)getPieces(turn).get("K")).isQueensideCastlingAvailable() ? "O" : "X");
-         */
     }
 
     // ----------- win & draw condition check -------------
@@ -375,12 +338,6 @@ public class ChessGame {
             resultInfo = "stalemate";
             return true;
         }else return false;
-        /*
-        return countPreviousEqualPosition() >= 2 // threefold repetition
-                || fiftyMoveStack >= 100 // fifty move rule
-                || !isMaterialSufficient() // insufficiency of material
-                || (lastMove.isMate() && !lastMove.isCheck()); // stalemate
-         */
     }
 
     public int countPreviousEqualPosition(){
@@ -403,20 +360,6 @@ public class ChessGame {
                 }
             }repetition++;
             if(repetition >= 2) break;
-            /*
-            if(mv.isKingsideCastling()){
-                copyb[tRank][7] = copyb[tRank][5];
-                copyb[tRank][5] = 0;
-            }else if(mv.isQueensideCastling()){
-                copyb[tRank][0] = copyb[tRank][3];
-                copyb[tRank][3] = 0;
-            }else if(mv.isEnPassant()){
-                copyb[tRank+mv.getMovedPiece().color().toInteger()][tFile]
-                        = mv.getCapturedPiece().indicator();
-            }
-            copyb[tRank][tFile] = mv.isCapture() ? mv.getCapturedPiece().indicator() : 0;
-            copyb[fRank][fFile] = mv.getMovedPiece().indicator();
-             */
         }return repetition;
     }
 
@@ -484,7 +427,6 @@ public class ChessGame {
         // that is, moveCount == ind after its execution
         int ind = moveNum * 2 - (turn.isWhite() ? 2 : 1);
         if(ind<0 || ind>=moves.size()){
-            // System.out.printf("input out of bound : %d\n", moveNum);
             return;
         }
         Move undoMove;
@@ -524,7 +466,7 @@ public class ChessGame {
         // board initialization
         if(ind == 0){
             for(int i=0; i<DIM; i++){
-                board[i] = INITIAL_BOARD[i].clone();
+                board[i] = DEFAULT_BOARD[i].clone();
             }
         }else{ // if ind > 0
             undoMove = moves.get(ind-1);
@@ -599,12 +541,6 @@ public class ChessGame {
         }
         allSquares.forEach((acn, sq) -> sq.setReachable());
         result = Integer.MIN_VALUE;
-        /*
-        System.out.println("board : ");
-        printBoard(false);
-        System.out.println("instboard : ");
-        printInstanceBoard(false);
-         */
     }
 
     public void setNoMoreCastlingMoveCount(PieceColor color, int sideIndic){
@@ -656,6 +592,10 @@ public class ChessGame {
         return board;
     }
 
+    public int[][] getInitBoard(){
+        return initBoard;
+    }
+
     public PieceColor getTurn(){
         return turn;
     }
@@ -667,11 +607,6 @@ public class ChessGame {
     public int getMoveCount(){
         return moveCount;
     }
-
-    /*
-    public HashMap<String, Square> getAllSquares(){
-        return allSquares;
-    }*/
 
     public HashMap<String, Piece> getPieces(PieceColor color){
         return switch(color){
@@ -710,12 +645,10 @@ public class ChessGame {
     // -------------- for printing on console ---------------
 
     public void printBoard(boolean flipBoard){
-        // StringBuilder sb = new StringBuilder();
         if(turn == PieceColor.BLACK && flipBoard){
             for(int r=DIM-1; r>=0; r--){
                 for(int f=DIM-1; f>=0; f--){
                     System.out.print(pieceIntToChar(board[r][f]));
-                    // sb.append(pieceIntToChar(board[r][f]));
                     if(f > 0)
                         System.out.print(" ");
                 }System.out.println();
@@ -724,12 +657,11 @@ public class ChessGame {
             for(int r=0; r<DIM; r++){
                 for(int f=0; f<DIM; f++){
                     System.out.print(pieceIntToChar(board[r][f]));
-                    // sb.append(pieceIntToChar(board[r][f]));
                     if(f < DIM-1)
                         System.out.print(" ");
                 }System.out.println();
             }
-        }// System.out.println(sb);
+        }
         System.out.println();
     }
 
@@ -737,7 +669,6 @@ public class ChessGame {
         int[][] instBoard = new int[DIM][DIM];
         whitePieces.forEach((id, pc) -> {
             if(!(pc.isTaken() || (pc instanceof Pawn && ((Pawn)pc).isPromoted()))){
-                // String pcid = pc.toString();
                 switch(id.charAt(id.length()-1)){
                     case 'K' -> instBoard[pc.rank()][pc.file()] = 6;
                     case 'Q' -> instBoard[pc.rank()][pc.file()] = 5;
@@ -751,7 +682,6 @@ public class ChessGame {
         });
         blackPieces.forEach((id, pc) -> {
             if(!(pc.isTaken() || (pc instanceof Pawn && ((Pawn)pc).isPromoted()))) {
-                // String pcid = pc.toString();
                 switch (id.charAt(id.length() - 1)) {
                     case 'K' -> instBoard[pc.rank()][pc.file()] = -6;
                     case 'Q' -> instBoard[pc.rank()][pc.file()] = -5;
@@ -771,9 +701,7 @@ public class ChessGame {
                     sb.append(" ");
                 }if(r > 0){
                     sb.append("\n");
-                }/*else{
-                    sb.append("\n");
-                }*/
+                }
             }
         }else{
             for(int r=0; r<DIM; r++){
@@ -782,9 +710,7 @@ public class ChessGame {
                     sb.append(" ");
                 }if(r < DIM-1){
                     sb.append("\n");
-                }/*else{
-                    sb.append("\n");
-                }*/
+                }
             }
         }System.out.println(sb);
     }
@@ -810,6 +736,7 @@ public class ChessGame {
             case 1 -> sb.append("1-0");
             case 0 -> sb.append("1/2-1/2");
             case -1 -> sb.append("0-1");
+            default -> sb.append("*");
         }
         System.out.println(sb);
     }
