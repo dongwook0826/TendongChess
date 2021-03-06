@@ -23,33 +23,18 @@ public class MovePair {
     public void setWhiteMove(Move whiteMove){
         if(whiteMove == null){
             setWhiteMoveNotation("");
-            // whiteMoveDone = false;
         }else{
             setWhiteMoveNotation(whiteMove.getAlgebraicNotation());
-            // whiteMoveDone = true;
         }
     }
 
     public void setBlackMove(Move blackMove){
         if(blackMove == null){
             setBlackMoveNotation("");
-            // blackMoveDone = false;
         }else{
             setBlackMoveNotation(blackMove.getAlgebraicNotation());
-            // blackMoveDone = true;
         }
     }
-
-    /*
-    public void setWhiteMoveDone(boolean whiteMoveDone){
-        this.whiteMoveDone = whiteMoveDone;
-    }
-
-    public void setBlackMoveDone(boolean blackMoveDone){
-        this.blackMoveDone = blackMoveDone;
-    }
-     */
-
 
     public int getMoveNum(){
         return moveNum.get();
@@ -82,14 +67,4 @@ public class MovePair {
     public StringProperty blackMoveNotationProperty(){
         return blackMoveNotation;
     }
-
-    /*
-    public boolean isWholeMovePairDone(){
-        return whiteMoveDone && blackMoveDone;
-    }
-
-    public boolean isMovePairEmpty(){
-        return !(whiteMoveDone || blackMoveDone);
-    }
-     */
 }

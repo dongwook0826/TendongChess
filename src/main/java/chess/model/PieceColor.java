@@ -3,8 +3,8 @@ package chess.model;
 public enum PieceColor {
     WHITE(true, 1), BLACK(false, -1);
 
-    private boolean boolColor;
-    private int intColor;
+    private final boolean boolColor;
+    private final int intColor;
 
     PieceColor(boolean boolColor, int intColor) {
         this.boolColor = boolColor;
@@ -24,15 +24,5 @@ public enum PieceColor {
 
     public int toInteger(){
         return intColor;
-    }
-
-    public static PieceColor boolToColor(boolean boolColor){
-        if(boolColor) return WHITE;
-        else return BLACK;
-    }
-
-    public static PieceColor intToColor(int index){
-        if(index == 0) return WHITE;
-        else return BLACK;
     }
 }

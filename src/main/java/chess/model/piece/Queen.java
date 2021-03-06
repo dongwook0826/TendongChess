@@ -45,11 +45,10 @@ public class Queen extends Piece {
                 if (isMovableTo(f, r)) {
                     Square sq = game.squareOn(f, r);
                     movable.add(sq);
-                    if (board[r][f] * col < 0) {
+                    if (board[r][f]*col < 0) {
                         takeable.add(sq);
                     }
-                }
-                if (board[r][f] != 0) {
+                }if(board[r][f] != 0){
                     break;
                 }
             }

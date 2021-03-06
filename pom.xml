@@ -30,6 +30,7 @@
             <version>${javafx.version}</version>
             <classifier>win</classifier>
         </dependency>
+        <!--
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-graphics</artifactId>
@@ -42,6 +43,7 @@
             <version>${javafx.version}</version>
             <classifier>linux</classifier>
         </dependency>
+        -->
     </dependencies>
     <build>
         <!--
@@ -83,6 +85,17 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>module-info.class</exclude>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
                             <shadedArtifactAttached>true</shadedArtifactAttached>
                             <shadedClassifierName>project-classifier</shadedClassifierName>
                             <outputFile>shade/TendongChess.jar</outputFile>

@@ -406,8 +406,6 @@ public class ChessController {
                 }else{
                     chessGame.takeback(movePair.getMoveNum() + (isWhite ? 0 : 1), !isWhite);
                 }
-                // System.out.printf("%s's turn\n", chessGame.getTurn().toString());
-                // chessGame.printBoard(false);
                 allMoveLocked = false;
                 gameFinished = false;
             }
@@ -608,21 +606,15 @@ public class ChessController {
                             // case 'q'
                             default -> white_Queen;
                         });
-                        /*
-                        System.out.printf("(%d, %d) -> (%d, %d) :: %s\n",
-                                holdingIndex[0], holdingIndex[1], targetIndex[0], targetIndex[1], uci.toString());
-                         */
                         chessGame.move(uci.toString());
                         currentShowingMoveInd++;
                         moveTable.getSelectionModel().select(currentShowingMoveInd/2,
                                 currentShowingMoveInd%2 == 0 ? whiteMoveNotationColumn : blackMoveNotationColumn);
-                        // moveTable.getFocusModel().focus(currentShowingMoveInd/2);
                         checkResult();
                         setPieceImages(currentBoard, isSwapped, false);
                     });
                 }else if(targetImage.getImage() == black_Pawn
                         && targetIndex[0] == (isSwapped ? 0 : 7)){
-                    // System.out.println("black prom");
                     blackPromotionMenu.show(targetImage, evt.getScreenX(), evt.getScreenY());
                     blackPromToQueen.setOnAction(e -> uci.append('q'));
                     blackPromToRook.setOnAction(e -> uci.append('r'));
@@ -637,36 +629,24 @@ public class ChessController {
                             // case 'q'
                             default -> black_Queen;
                         });
-                        /*
-                        System.out.printf("(%d, %d) -> (%d, %d) :: %s\n",
-                                holdingIndex[0], holdingIndex[1], targetIndex[0], targetIndex[1], uci.toString());
-                         */
                         chessGame.move(uci.toString());
                         currentShowingMoveInd++;
                         moveTable.getSelectionModel().select(currentShowingMoveInd/2,
                                 currentShowingMoveInd%2 == 0 ? whiteMoveNotationColumn : blackMoveNotationColumn);
-                        // moveTable.getFocusModel().focus(currentShowingMoveInd/2);
                         checkResult();
                         setPieceImages(currentBoard, isSwapped, false);
                     });
                 } else {
-                    /*
-                    System.out.printf("(%d, %d) -> (%d, %d) :: %s\n",
-                            holdingIndex[0], holdingIndex[1], targetIndex[0], targetIndex[1], uci.toString());
-                     */
                     chessGame.move(uci.toString());
                     currentShowingMoveInd++;
                     moveTable.getSelectionModel().select(currentShowingMoveInd/2,
                             currentShowingMoveInd%2 == 0 ? whiteMoveNotationColumn : blackMoveNotationColumn);
-                    // moveTable.getFocusModel().focus(currentShowingMoveInd/2);
                     checkResult();
                 }
                 squareHighlightsIndex[0] = holdingIndex;
                 squareHighlightsIndex[1] = targetIndex;
-                // highlightSquare(squareHighlightsIndex[0]);
                 highlightSquare(squareHighlightsIndex[1]);
                 setPieceImages(currentBoard, isSwapped, false);
-                // chessGame.printBoard(isSwapped);
             }
         }else{
             evt.consume();
@@ -716,7 +696,6 @@ public class ChessController {
         for(int r=0; r<DIM; r++){
             Rectangle zsq = indToSquareMap(r,0);
             assert zsq != null;
-            // System.out.println(zsq.getId());
             double rankY = zsq.sceneToLocal(mousePoint).getY();
             double height = zsq.getHeight();
             if(rankY<0 || rankY>=height) continue;
@@ -729,7 +708,6 @@ public class ChessController {
                 break rankLoop;
             }
         }
-        // System.out.printf("picked ind (%d,%d)\n", ind[0], ind[1]);
         return ind;
     }
 
@@ -822,10 +800,8 @@ public class ChessController {
         int moveInd = moveNum == 0 ? -1 : (moveNum*2 - (isWhite ? 2 : 1));
         if(moveNum <= 0){
             moveTable.getSelectionModel().select(0, moveNumColumn);
-            // moveTable.getFocusModel().focus(0);
         }else{
             moveTable.getSelectionModel().select(moveNum-1, isWhite ? whiteMoveNotationColumn : blackMoveNotationColumn);
-            // moveTable.getFocusModel().focus(moveNum-1);
         }
         if(moveInd >= chessGame.getMoveCount()) moveInd = chessGame.getMoveCount()-1;
         setPieceImages(moveNum == 0 ? chessGame.getInitBoard() :

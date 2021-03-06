@@ -23,15 +23,6 @@ public class Pawn extends Piece {
         super(game, pieceColor, pieceId);
     }
 
-    /*
-    public boolean isLeftEnPassantAvailable(){
-        return leftEnPassantAvailable;
-    }
-
-    public boolean isRightEnPassantAvailable(){
-        return rightEnPassantAvailable;
-    }
-     */
     public void setTwoSquareMovable(){
         twoSquareMovable = true;
     }

@@ -20,7 +20,6 @@ public class Square {
     // file a~h for index 0~7
     // rank 1~8 for index 7~0
     protected HashSet<Square> reachable; // 해당 move에 여기로 올 수 있는 말들의 위치; 여기로 movable한 말들이 있는 칸들의 집합
-    // protected HashSet<Square> attacking = null; // 해당 move에 king이 여기로 움직이면 안됨; 상대방이 공격 중인 칸들의 집합; self checking 비종속적
     protected boolean isAttacked = false;
 
     public Square(ChessGame game, int file, int rank){
@@ -28,19 +27,12 @@ public class Square {
         this.file = file;
         this.rank = rank;
         acnCoord = String.format("%c%d", 'a'+file, ChessGame.DIM-rank);
-        // System.out.printf("gen square %s\n", acnCoord);
     }
-    /*
-    public Square(ChessGame game, int file, int rank, Piece piece){
-        this(game, file, rank);
-        this.piece = piece;
-    }*/
 
     public void setPiece(Piece piece){
         this.piece = piece;
         isFilled = true;
         if(piece.getSquare() != this) piece.setSquare(this);
-        // System.out.printf("--setPiece-- %s on %s\n", piece.toString(), acnCoord);
     }
 
     public void setNullPiece(){
